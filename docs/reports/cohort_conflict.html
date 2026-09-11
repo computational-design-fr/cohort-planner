@@ -1,0 +1,291 @@
+<title>Cohort Planner · cohort_conflict</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#F4F6F3;--surface:#FFFFFF;--ink:#17201C;--muted:#5D6A63;--line:#D6DDD8;--line-soft:#E8EDE9;
+  --accent:#0E6F78;--accent-ink:#FFFFFF;--accent-soft:#DDEFF0;
+  --ok:#2F7D4E;--ok-soft:#E1F0E6;--warn:#B8791B;--warn-soft:#F7ECD6;--bad:#B23A31;--bad-soft:#F5DEDC;
+  --c1:#3D7EBF;--c2:#C5642B;--c3:#6E9A2C;--c4:#9557B5;--c5:#C7A11F;--c6:#2C9A8D;--c7:#C34C7A;--c8:#7A6E52;
+  --heat0:#EEF4F3;--heat1:#0E6F78;
+  --display:"Bricolage Grotesque","Public Sans",system-ui,sans-serif;--body:"Public Sans",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --slot:22px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --ground:#101614;--surface:#182019;--ink:#E7ECE8;--muted:#96A39B;--line:#2A3630;--line-soft:#212B26;
+  --accent:#5CC3CC;--accent-ink:#0E1A1B;--accent-soft:#1C3538;
+  --ok:#6CC08F;--ok-soft:#1D3327;--warn:#E0A94E;--warn-soft:#3A2D14;--bad:#E4716A;--bad-soft:#3E1F1C;
+  --c1:#6FA3DA;--c2:#E08A55;--c3:#98C053;--c4:#B98BD4;--c5:#E0C04A;--c6:#5CC0B3;--c7:#E07AA3;--c8:#B0A282;
+  --heat0:#1E2A27;--heat1:#7ED9E0;
+}}
+:root[data-theme="dark"]{
+  --ground:#101614;--surface:#182019;--ink:#E7ECE8;--muted:#96A39B;--line:#2A3630;--line-soft:#212B26;
+  --accent:#5CC3CC;--accent-ink:#0E1A1B;--accent-soft:#1C3538;
+  --ok:#6CC08F;--ok-soft:#1D3327;--warn:#E0A94E;--warn-soft:#3A2D14;--bad:#E4716A;--bad-soft:#3E1F1C;
+  --c1:#6FA3DA;--c2:#E08A55;--c3:#98C053;--c4:#B98BD4;--c5:#E0C04A;--c6:#5CC0B3;--c7:#E07AA3;--c8:#B0A282;
+  --heat0:#1E2A27;--heat1:#7ED9E0;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font:14px/1.5 var(--body);}
+a{color:var(--accent)}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;gap:16px 32px;padding:22px 28px 14px;border-bottom:1px solid var(--line)}
+h1{font:700 30px/1.05 var(--display);margin:0;letter-spacing:-.01em;text-wrap:balance}
+.sub{color:var(--muted);margin-top:4px}
+.stats{display:flex;gap:22px;margin-left:auto;font-variant-numeric:tabular-nums}
+.stat{display:flex;flex-direction:column;gap:2px;min-width:64px}
+.stat b{font:500 22px/1 var(--display)}
+.stat span{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.load{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.load input{font:inherit;max-width:190px}
+main{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:20px;padding:20px 28px 40px}
+@media (max-width:980px){main{grid-template-columns:1fr}}
+section h2{font:700 16px/1.2 var(--display);margin:0 0 10px;letter-spacing:-.005em}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:6px}
+/* timetable */
+.tt-wrap{overflow-x:auto}
+.tt{display:grid;grid-template-columns:52px repeat(var(--days,5),minmax(120px,1fr));min-width:660px}
+.tt .hd{position:sticky;top:0;padding:8px 10px;font:600 12px/1.2 var(--body);letter-spacing:.04em;text-transform:uppercase;border-bottom:1px solid var(--line);border-left:1px solid var(--line-soft);background:var(--surface)}
+.tt .hd small{display:block;font:400 11px/1.4 var(--mono);color:var(--muted);text-transform:none;letter-spacing:0}
+.tt .corner{border-bottom:1px solid var(--line)}
+.tt .hours{position:relative;border-right:1px solid var(--line)}
+.tt .hours div{position:absolute;right:8px;transform:translateY(-50%);font:400 11px/1 var(--mono);color:var(--muted)}
+.tt .day{position:relative;border-left:1px solid var(--line-soft);background:
+  repeating-linear-gradient(to bottom,transparent 0,transparent calc(var(--slot)*2 - 1px),var(--line-soft) calc(var(--slot)*2 - 1px),var(--line-soft) calc(var(--slot)*2))}
+.blk{position:absolute;left:4px;right:4px;border-radius:4px;padding:5px 7px;overflow:hidden;cursor:pointer;
+  background:color-mix(in srgb,var(--c) 18%,var(--surface));border-left:3px solid var(--c);color:var(--ink);
+  transition:box-shadow .12s, transform .12s}
+.blk:hover,.blk:focus-visible{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--c);outline:none;z-index:2}
+.blk.sel{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--accent);z-index:3}
+.blk.dim{opacity:.35}
+.blk .t{font:600 12px/1.25 var(--body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.blk .m{font:400 11px/1.3 var(--mono);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.blk .rec{font:500 10px/1 var(--mono);background:var(--c);color:var(--surface);border-radius:3px;padding:2px 4px;margin-left:4px}
+/* rail */
+.rail{display:flex;flex-direction:column;gap:18px}
+.list{display:flex;flex-direction:column}
+.row{display:grid;grid-template-columns:8px 1fr auto;gap:10px;align-items:center;padding:9px 12px;border-top:1px solid var(--line-soft);cursor:pointer}
+.row:first-child{border-top:0}
+.row:hover{background:var(--ground)}
+.row.sel{background:var(--accent-soft)}
+.row .sw{width:8px;height:8px;border-radius:2px;background:var(--c,var(--muted))}
+.row .n{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .w{font:400 11px/1.4 var(--mono);color:var(--muted)}
+.pill{font:500 10px/1 var(--body);letter-spacing:.05em;text-transform:uppercase;padding:4px 7px;border-radius:999px;white-space:nowrap}
+.pill.confirmed{background:var(--ok-soft);color:var(--ok)}
+.pill.asynchronous{background:var(--warn-soft);color:var(--warn)}
+.pill.escalated{background:var(--bad-soft);color:var(--bad)}
+.detail{padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.detail h3{font:700 15px/1.25 var(--display);margin:0}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:12px}
+.kv dt{color:var(--muted)}.kv dd{margin:0;font-family:var(--mono)}
+.bars{display:flex;flex-direction:column;gap:4px}
+.bar{display:grid;grid-template-columns:78px 1fr 34px;gap:8px;align-items:center;font-size:12px}
+.bar .id{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar .tr{height:8px;background:var(--line-soft);border-radius:4px;overflow:hidden}
+.bar .fl{height:100%;background:var(--accent);border-radius:4px}
+.bar .v{font-family:var(--mono);text-align:right;color:var(--muted)}
+.bar.mand .id::after{content:" *";color:var(--bad)}
+.trace{margin:0;padding:0 0 0 14px;font:400 11px/1.5 var(--mono);color:var(--muted)}
+.trace li.last{color:var(--ink)}
+.empty{color:var(--muted);font-size:12px;padding:12px 14px}
+/* bottom */
+.bottom{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px}
+@media (max-width:980px){.bottom{grid-template-columns:1fr}}
+.heat-wrap{overflow-x:auto;padding:12px}
+.heat{border-collapse:separate;border-spacing:2px;font-variant-numeric:tabular-nums}
+.heat th{font:500 11px/1.2 var(--mono);color:var(--muted);text-align:left;padding:2px 6px 6px 2px;white-space:nowrap}
+.heat th.col{writing-mode:vertical-rl;transform:rotate(180deg);text-align:left;padding:0 0 0 4px;max-height:120px;overflow:hidden}
+.heat td{width:26px;height:22px;border-radius:3px;background:var(--line-soft)}
+.heat td.u{background:color-mix(in srgb,var(--heat1) calc(var(--p)*100%),var(--heat0))}
+.heat td.u:hover{outline:2px solid var(--accent)}
+.heat td.debt{background:none;font:400 11px/1 var(--mono);color:var(--muted);text-align:right;padding-right:4px;width:auto}
+.legend{display:flex;gap:14px;align-items:center;font-size:11px;color:var(--muted);padding:0 12px 12px}
+.legend i{display:inline-block;width:40px;height:8px;border-radius:4px;background:linear-gradient(90deg,var(--heat0),var(--heat1));vertical-align:middle;margin-right:6px}
+.chart{padding:12px 14px 6px}
+.chart svg{width:100%;height:150px;display:block}
+.chart .grid{stroke:var(--line-soft)}
+.chart .ax{font:400 10px var(--mono);fill:var(--muted)}
+.chart .ln{fill:none;stroke:var(--accent);stroke-width:2;stroke-linejoin:round}
+.chart .ar{fill:var(--accent);opacity:.12}
+.chart .pt{fill:var(--accent);stroke:var(--surface);stroke-width:2}
+.chart .cap{font-size:11px;color:var(--muted);margin:6px 0 4px}
+#tip{position:fixed;z-index:20;pointer-events:none;background:var(--ink);color:var(--ground);padding:8px 10px;border-radius:5px;font-size:12px;max-width:260px;display:none;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+#tip b{display:block;margin-bottom:4px}
+#tip .u{display:grid;grid-template-columns:auto auto;gap:1px 12px;font-family:var(--mono);font-size:11px}
+@media (prefers-reduced-motion: reduce){.blk{transition:none}}
+</style>
+
+<header>
+  <div>
+    <h1>Cohort Planner</h1>
+    <div class="sub" id="sub">Distributed meeting schedule negotiated by DCOP local search</div>
+  </div>
+  <div class="stats" id="stats"></div>
+  <label class="load">Load a result JSON <input type="file" id="file" accept="application/json"></label>
+</header>
+
+<main>
+  <section>
+    <h2>Week grid</h2>
+    <div class="panel tt-wrap"><div class="tt" id="tt"></div></div>
+  </section>
+  <aside class="rail">
+    <section>
+      <h2>Sessions</h2>
+      <div class="panel list" id="list"></div>
+    </section>
+    <section>
+      <h2>Selected session</h2>
+      <div class="panel" id="detail"><div class="empty">Click a block or a row.</div></div>
+    </section>
+  </aside>
+  <div class="bottom">
+    <section>
+      <h2>Who got what · utility per participant</h2>
+      <div class="panel">
+        <div class="heat-wrap"><table class="heat" id="heat"></table></div>
+        <div class="legend"><span><i></i>0 → 1 utility</span><span>blank = not invited</span><span>D = cumulative inconvenience debt</span></div>
+      </div>
+    </section>
+    <section>
+      <h2>Solver convergence</h2>
+      <div class="panel chart" id="chart"></div>
+    </section>
+  </div>
+</main>
+<div id="tip"></div>
+
+<script>
+const RESULT = /*__DCOP_RESULT__*/{"solver": "mgm", "rounds": 9, "messages": 570, "cost_history": [-6.8009, -7.1586, -7.4608, -7.6638, -7.8149, -7.8816, -7.8816, -7.8816, -7.8816], "violations": [], "horizon": {"start": "2026-09-14T09:00:00+02:00", "end": "2026-09-18T19:00:00+02:00"}, "participants": [{"id": "mentor-01", "role": "facilitator", "debt": 0.0, "preferred_hours": [13, 19]}, {"id": "mentor-02", "role": "facilitator", "debt": 0.0, "preferred_hours": [9, 18]}, {"id": "learner-01", "role": "learner", "debt": 0.0, "preferred_hours": [17, 19]}, {"id": "learner-02", "role": "learner", "debt": 0.0, "preferred_hours": [9, 13]}, {"id": "learner-03", "role": "learner", "debt": 0.0, "preferred_hours": [9, 18]}, {"id": "learner-04", "role": "learner", "debt": 0.0, "preferred_hours": [9, 18]}, {"id": "learner-05", "role": "learner", "debt": 0.8, "preferred_hours": [17, 19]}, {"id": "learner-06", "role": "learner", "debt": 0.1, "preferred_hours": [9, 18]}, {"id": "learner-07", "role": "learner", "debt": 0.75, "preferred_hours": [13, 19]}, {"id": "learner-08", "role": "learner", "debt": 0.0, "preferred_hours": [9, 18]}, {"id": "learner-09", "role": "learner", "debt": 0.7, "preferred_hours": [9, 13]}, {"id": "learner-10", "role": "learner", "debt": 0.0, "preferred_hours": [17, 19]}, {"id": "learner-11", "role": "learner", "debt": 0.0, "preferred_hours": [9, 18]}, {"id": "learner-12", "role": "learner", "debt": 0.0, "preferred_hours": [17, 19]}], "sessions": [{"id": "peer-review-05", "title": "Peer Review #5", "status": "asynchronous", "slot": null, "recurrence_weeks": 1, "participants": ["mentor-02", "learner-08", "learner-12", "learner-02", "learner-09", "learner-04", "learner-03", "learner-01", "learner-11"], "mandatory": ["mentor-02"], "resource": "room-a", "duration_minutes": 30, "priority": 57, "score": 0.0, "utilities": {}, "min_utility": null, "relaxation": {"level": 6, "kind": "asynchronous", "fallback": {"fallback_type": "asynchronous", "materials": ["peer-review-notes", "exercise-set"], "deadline": "2026-09-21T00:00:00+02:00", "required_evidence": ["submitted-exercise"]}}, "trace": ["peer-review-05: no acceptable slot with current constraints", "level 6: asynchronous fallback"]}, {"id": "design-crit-06", "title": "Design Crit #6", "status": "asynchronous", "slot": null, "recurrence_weeks": 1, "participants": ["mentor-02", "learner-06", "learner-03", "learner-10", "learner-09", "learner-05", "learner-01"], "mandatory": ["mentor-02"], "resource": "room-b", "duration_minutes": 60, "priority": 49, "score": 0.0, "utilities": {}, "min_utility": null, "relaxation": {"level": 6, "kind": "asynchronous", "fallback": {"fallback_type": "asynchronous", "materials": ["design-crit-notes", "exercise-set"], "deadline": "2026-09-21T00:00:00+02:00", "required_evidence": ["submitted-exercise"]}}, "trace": ["design-crit-06: no acceptable slot with current constraints", "level 6: asynchronous fallback"]}, {"id": "git-workflow-07", "title": "Git Workflow #7", "status": "escalated", "slot": null, "recurrence_weeks": 1, "participants": ["mentor-02", "learner-07", "learner-06", "learner-12", "learner-11", "learner-02"], "mandatory": ["mentor-02"], "resource": "room-a", "duration_minutes": 60, "priority": 20, "score": 0.0, "utilities": {}, "min_utility": null, "relaxation": {"level": 7, "kind": "escalate", "fallback": {}}, "trace": ["git-workflow-07: no acceptable slot with current constraints", "level 7: escalate to human coordinator"]}, {"id": "open-source-09", "title": "Open Source #9", "status": "escalated", "slot": null, "recurrence_weeks": 1, "participants": ["learner-11", "learner-03", "learner-04", "learner-05", "learner-07", "learner-09"], "mandatory": [], "resource": "room-a", "duration_minutes": 60, "priority": 44, "score": 0.0, "utilities": {}, "min_utility": null, "relaxation": {"level": 7, "kind": "escalate", "fallback": {}}, "trace": ["open-source-09: no acceptable slot with current constraints", "level 7: escalate to human coordinator"]}, {"id": "retro-11", "title": "Retro #11", "status": "escalated", "slot": null, "recurrence_weeks": 4, "participants": ["mentor-02", "learner-06", "learner-05", "learner-11", "learner-10", "learner-09", "learner-04", "learner-12", "learner-02"], "mandatory": ["mentor-02"], "resource": "room-a", "duration_minutes": 60, "priority": 81, "score": 0.0, "utilities": {}, "min_utility": null, "relaxation": {"level": 7, "kind": "escalate", "fallback": {}}, "trace": ["retro-11: no acceptable slot with current constraints", "level 7: escalate to human coordinator"]}, {"id": "kata-12", "title": "Kata #12", "status": "escalated", "slot": null, "recurrence_weeks": 1, "participants": ["mentor-01", "learner-08", "learner-06", "learner-12", "learner-07", "learner-03"], "mandatory": ["mentor-01"], "resource": "room-a", "duration_minutes": 120, "priority": 44, "score": 0.0, "utilities": {}, "min_utility": null, "relaxation": {"level": 7, "kind": "escalate", "fallback": {}}, "trace": ["kata-12: no acceptable slot with current constraints", "level 7: escalate to human coordinator"]}, {"id": "pair-impossible", "title": "Pair kata (no common slot)", "status": "asynchronous", "slot": null, "recurrence_weeks": 1, "participants": ["learner-04", "learner-01"], "mandatory": ["learner-04", "learner-01"], "resource": null, "duration_minutes": 60, "priority": 10, "score": 0.0, "utilities": {}, "min_utility": null, "relaxation": {"level": 6, "kind": "asynchronous", "fallback": {"fallback_type": "asynchronous", "materials": ["kata", "recording"], "deadline": "2026-09-21T00:00:00+02:00", "required_evidence": ["submitted-exercise", "peer-review"]}}, "trace": ["pair-impossible: no acceptable slot with current constraints", "level 6: asynchronous fallback"]}, {"id": "rhino-compute-03", "title": "Rhino Compute #3", "status": "confirmed", "slot": {"id": "thu17-1400", "start": "2026-09-17T14:00:00+02:00", "end": "2026-09-17T15:30:00+02:00"}, "recurrence_weeks": 1, "participants": ["mentor-02", "learner-05", "learner-02", "learner-12", "learner-04", "learner-09", "learner-11", "learner-06", "learner-08"], "mandatory": ["mentor-02"], "resource": null, "duration_minutes": 90, "priority": 68, "score": 1.667, "utilities": {"mentor-02": 1.0, "learner-06": 1.0, "learner-08": 1.0}, "min_utility": 1.0, "relaxation": {"level": 5, "kind": "partial", "fallback": {}}, "trace": ["rhino-compute-03: no acceptable slot with current constraints", "level 5: partial attendance (optional attendees may be absent)", "published thu17-1400"]}, {"id": "geospatial-02", "title": "Geospatial #2", "status": "confirmed", "slot": {"id": "mon14-1500", "start": "2026-09-14T15:00:00+02:00", "end": "2026-09-14T16:30:00+02:00"}, "recurrence_weeks": 1, "participants": ["mentor-01", "learner-11", "learner-01", "learner-09", "learner-04"], "mandatory": ["mentor-01"], "resource": "video-1", "duration_minutes": 90, "priority": 53, "score": 1.26, "utilities": {"mentor-01": 1.0, "learner-11": 1.0, "learner-09": 0.3}, "min_utility": 0.3, "relaxation": null, "trace": ["repair: thu17-1000 rejected (mandatory mentor-01)", "repair: thu17-1030 rejected (mandatory mentor-01)", "published mon14-1500"]}, {"id": "career-circle-10", "title": "Career Circle #10", "status": "confirmed", "slot": {"id": "wed16-1330", "start": "2026-09-16T13:30:00+02:00", "end": "2026-09-16T15:30:00+02:00"}, "recurrence_weeks": 1, "participants": ["mentor-02", "learner-12", "learner-02", "learner-01", "learner-07", "learner-08"], "mandatory": ["mentor-02"], "resource": null, "duration_minutes": 120, "priority": 37, "score": 1.667, "utilities": {"mentor-02": 1.0, "learner-08": 1.0}, "min_utility": 1.0, "relaxation": {"level": 5, "kind": "partial", "fallback": {}}, "trace": ["career-circle-10: no acceptable slot with current constraints", "level 5: partial attendance (optional attendees may be absent)", "published wed16-1330"]}, {"id": "python-async-01", "title": "Python Async #1", "status": "confirmed", "slot": {"id": "thu17-1530", "start": "2026-09-17T15:30:00+02:00", "end": "2026-09-17T16:30:00+02:00"}, "recurrence_weeks": 1, "participants": ["mentor-01", "learner-12", "learner-09", "learner-03", "learner-11", "learner-01", "learner-07", "learner-06", "learner-05"], "mandatory": ["mentor-01"], "resource": null, "duration_minutes": 60, "priority": 30, "score": 1.546, "utilities": {"mentor-01": 1.0, "learner-11": 1.0, "learner-06": 0.9}, "min_utility": 0.9, "relaxation": {"level": 5, "kind": "partial", "fallback": {}}, "trace": ["python-async-01: no acceptable slot with current constraints", "level 5: partial attendance (optional attendees may be absent)", "published thu17-1530"]}, {"id": "data-viz-08", "title": "Data Viz #8", "status": "confirmed", "slot": {"id": "wed16-0900~60m", "start": "2026-09-16T09:00:00+02:00", "end": "2026-09-16T10:00:00+02:00"}, "recurrence_weeks": 1, "participants": ["mentor-02", "learner-05", "learner-06", "learner-02", "learner-07", "learner-09", "learner-08"], "mandatory": ["mentor-02"], "resource": null, "duration_minutes": 60, "priority": 29, "score": 1.899, "utilities": {"mentor-02": 1.0, "learner-05": 0.2, "learner-06": 1.0, "learner-02": 1.0, "learner-07": 0.25, "learner-09": 1.0, "learner-08": 1.0}, "min_utility": 0.2, "relaxation": {"level": 3, "kind": "shortened", "fallback": {}}, "trace": ["data-viz-08: no acceptable slot with current constraints", "level 3: shortened to 60 min", "published wed16-0900~60m"]}, {"id": "ml-basics-04", "title": "Ml Basics #4", "status": "escalated", "slot": null, "recurrence_weeks": 1, "participants": ["mentor-01", "learner-06", "learner-05", "learner-11", "learner-03", "learner-01"], "mandatory": ["mentor-01"], "resource": null, "duration_minutes": 90, "priority": 27, "score": 0.0, "utilities": {}, "min_utility": null, "relaxation": {"level": 7, "kind": "escalate", "fallback": {}}, "trace": ["repair: mon14-1500 rejected (conflict)", "repair: mon14-1530 rejected (conflict)", "repair: thu17-1000 rejected (conflict)", "repair: thu17-1030 rejected (conflict)", "ml-basics-04: no acceptable slot with current constraints", "level 2: relaxed acceptance thresholds (optional preferences)", "no acceptable slot after relaxation"]}]};
+const COLORS = ['--c1','--c2','--c3','--c4','--c5','--c6','--c7','--c8'];
+const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+let R = null, sel = null, colorOf = {};
+
+function iso(s){ // keep the schedule's own wall-clock, ignore browser zone
+  const m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/.exec(s);
+  return {date:`${m[1]}-${m[2]}-${m[3]}`, h:+m[4], min:+m[5], dow:new Date(Date.UTC(+m[1],+m[2]-1,+m[3])).getUTCDay()};
+}
+function hm(s){const t=iso(s);return `${String(t.h).padStart(2,'0')}:${String(t.min).padStart(2,'0')}`}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+
+function render(r){
+  R = r; sel = null;
+  const conf = r.sessions.filter(s=>s.status==='confirmed');
+  colorOf = {}; r.sessions.forEach((s,i)=>colorOf[s.id]=COLORS[i%COLORS.length]);
+  document.getElementById('sub').textContent = `${r.sessions.length} sessions · ${r.participants.length} people · solver ${r.solver.toUpperCase()}`;
+  const st = [['confirmed',conf.length],['async / escalated',r.sessions.length-conf.length],['rounds',r.rounds],['messages',r.messages],['violations',r.violations.length]];
+  document.getElementById('stats').innerHTML = st.map(([k,v])=>`<div class="stat"><b>${v}</b><span>${k}</span></div>`).join('');
+  renderGrid(conf); renderList(); renderHeat(conf); renderChart(); showDetail(null);
+}
+
+function renderGrid(conf){
+  const tt = document.getElementById('tt');
+  // days from horizon, hours from slots
+  let days = [];
+  if (R.horizon){ const a=iso(R.horizon.start), b=iso(R.horizon.end); const d0=new Date(a.date+'T00:00:00Z'); const n=Math.max(1,Math.round((new Date(b.date+'T00:00:00Z')-d0)/864e5)+(iso(R.horizon.end).h>0?1:0));
+    for(let i=0;i<n;i++){const d=new Date(d0.getTime()+i*864e5); if(d.getUTCDay()>=1&&d.getUTCDay()<=5) days.push(d.toISOString().slice(0,10));}
+  }
+  if(!days.length) days=[...new Set(conf.map(s=>iso(s.slot.start).date))].sort();
+  let h0=9,h1=19;
+  if(R.horizon){h0=iso(R.horizon.start).h; const e=iso(R.horizon.end); h1=e.h+(e.min?1:0);}
+  conf.forEach(s=>{h0=Math.min(h0,iso(s.slot.start).h); const e=iso(s.slot.end); h1=Math.max(h1,e.h+(e.min?1:0));});
+  const slots=(h1-h0)*2, slotPx=22, height=slots*slotPx;
+  tt.style.setProperty('--days',days.length);
+  let html=`<div class="corner"></div>`+days.map(d=>{const t=iso(d+'T00:00');return `<div class="hd">${DAYS[(t.dow+6)%7]}<small>${d}</small></div>`}).join('');
+  html+=`<div class="hours" style="height:${height}px">`+Array.from({length:h1-h0+1},(_,i)=>`<div style="top:${i*2*slotPx}px">${String(h0+i).padStart(2,'0')}:00</div>`).join('')+`</div>`;
+  for(const d of days){
+    html+=`<div class="day" style="height:${height}px">`;
+    const todays=conf.filter(s=>iso(s.slot.start).date===d).sort((a,b)=>a.slot.start<b.slot.start?-1:1);
+    // simple lane packing for overlaps
+    const lanes=[];
+    for(const s of todays){const a=iso(s.slot.start),b=iso(s.slot.end);s._t=(a.h-h0)*2+a.min/30;s._b=(b.h-h0)*2+b.min/30;let L=0;while(lanes[L]&&lanes[L]>s._t)L++;lanes[L]=s._b;s._lane=L;s._lanes=lanes.length;}
+    for(const s of todays){
+      const n=Math.max(1,...todays.filter(o=>!(o._b<=s._t||o._t>=s._b)).map(o=>o._lane+1));
+      const w=100/n, left=`calc(${s._lane*w}% + 4px)`, width=`calc(${w}% - 8px)`;
+      const top=s._t*slotPx+1, hgt=(s._b-s._t)*slotPx-2;
+      html+=`<div class="blk" tabindex="0" data-id="${esc(s.id)}" style="--c:var(${colorOf[s.id]});top:${top}px;height:${hgt}px;left:${left};width:${width}">
+        <div class="t">${esc(s.title)}${s.recurrence_weeks>1?`<span class="rec">×${s.recurrence_weeks}w</span>`:''}</div>
+        <div class="m">${hm(s.slot.start)}–${hm(s.slot.end)} · ${s.participants.length}p${s.resource?' · '+esc(s.resource):''}</div></div>`;
+    }
+    html+=`</div>`;
+  }
+  tt.innerHTML=html;
+  tt.querySelectorAll('.blk').forEach(el=>{
+    el.addEventListener('click',()=>select(el.dataset.id));
+    el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();select(el.dataset.id)}});
+    el.addEventListener('mousemove',e=>tip(e,el.dataset.id));
+    el.addEventListener('mouseleave',hideTip);
+  });
+}
+
+function renderList(){
+  const order={confirmed:0,asynchronous:1,escalated:2};
+  const rows=[...R.sessions].sort((a,b)=>order[a.status]-order[b.status]||(a.slot&&b.slot?(a.slot.start<b.slot.start?-1:1):0));
+  document.getElementById('list').innerHTML=rows.map(s=>`<div class="row" data-id="${esc(s.id)}" style="--c:var(${colorOf[s.id]})">
+    <span class="sw"></span><div><div class="n">${esc(s.title)}</div><div class="w">${s.slot?`${DAYS[(iso(s.slot.start).dow+6)%7]} ${hm(s.slot.start)} · ${s.duration_minutes} min`:(s.relaxation?`level ${s.relaxation.level} · ${s.relaxation.kind}`:'unscheduled')}</div></div>
+    <span class="pill ${s.status}">${s.status==='asynchronous'?'async':s.status}</span></div>`).join('');
+  document.getElementById('list').querySelectorAll('.row').forEach(el=>el.addEventListener('click',()=>select(el.dataset.id)));
+}
+
+function select(id){ sel = sel===id?null:id;
+  document.querySelectorAll('.blk').forEach(el=>{el.classList.toggle('sel',el.dataset.id===sel);el.classList.toggle('dim',!!sel&&el.dataset.id!==sel)});
+  document.querySelectorAll('.row').forEach(el=>el.classList.toggle('sel',el.dataset.id===sel));
+  showDetail(sel?R.sessions.find(s=>s.id===sel):null);
+}
+
+function showDetail(s){
+  const d=document.getElementById('detail');
+  if(!s){d.innerHTML='<div class="empty">Click a block or a row.</div>';return;}
+  const util=s.utilities||{};
+  const bars=s.participants.map(p=>{const u=util[p];const mand=(s.mandatory||[]).includes(p);
+    return `<div class="bar ${mand?'mand':''}"><span class="id">${esc(p)}</span><div class="tr"><div class="fl" style="width:${u==null?0:Math.round(u*100)}%"></div></div><span class="v">${u==null?'—':u.toFixed(2)}</span></div>`}).join('');
+  const rel=s.relaxation?`<dt>relaxation</dt><dd>L${s.relaxation.level} ${esc(s.relaxation.kind)}</dd>`:'';
+  const fb=s.relaxation&&s.relaxation.fallback&&s.relaxation.fallback.deadline?`<dt>fallback</dt><dd>${esc((s.relaxation.fallback.materials||[]).join(', '))} · due ${esc(s.relaxation.fallback.deadline).slice(0,10)}</dd>`:'';
+  d.innerHTML=`<div class="detail"><h3>${esc(s.title)}</h3>
+    <dl class="kv"><dt>status</dt><dd><span class="pill ${s.status}">${s.status}</span></dd>
+    ${s.slot?`<dt>when</dt><dd>${esc(iso(s.slot.start).date)} ${hm(s.slot.start)}–${hm(s.slot.end)}${s.recurrence_weeks>1?` · ${s.recurrence_weeks} weeks`:''}</dd>`:''}
+    <dt>duration</dt><dd>${s.duration_minutes} min</dd><dt>priority</dt><dd>${s.priority}</dd>
+    ${s.resource?`<dt>resource</dt><dd>${esc(s.resource)}</dd>`:''}
+    ${s.score!=null&&s.status==='confirmed'?`<dt>score U</dt><dd>${s.score.toFixed(2)}</dd><dt>min utility</dt><dd>${s.min_utility==null?'—':s.min_utility.toFixed(2)}</dd>`:''}
+    ${rel}${fb}</dl>
+    <div class="bars">${bars}</div><div style="font-size:11px;color:var(--muted)">* mandatory attendee</div>
+    ${s.trace&&s.trace.length?`<ol class="trace">${s.trace.map((t,i)=>`<li class="${i===s.trace.length-1?'last':''}">${esc(t)}</li>`).join('')}</ol>`:''}</div>`;
+}
+
+function renderHeat(conf){
+  const people=R.participants;
+  const cols=conf;
+  let html='<thead><tr><th></th>'+cols.map(s=>`<th class="col" title="${esc(s.title)}">${esc(s.id)}</th>`).join('')+'<th>D</th></tr></thead><tbody>';
+  for(const p of people){
+    html+=`<tr><th>${esc(p.id)}${p.role==='facilitator'?' ◆':''}</th>`+cols.map(s=>{const u=(s.utilities||{})[p.id];
+      return u==null?'<td></td>':`<td class="u" style="--p:${u.toFixed(2)}" title="${esc(p.id)} · ${esc(s.title)} · ${u.toFixed(2)}"></td>`}).join('')+`<td class="debt">${(p.debt||0).toFixed(1)}</td></tr>`;
+  }
+  document.getElementById('heat').innerHTML=html+'</tbody>';
+}
+
+function renderChart(){
+  const h=R.cost_history||[]; const el=document.getElementById('chart');
+  if(h.length<2){el.innerHTML='<div class="empty">No round history.</div>';return;}
+  const W=340,H=150,L=44,Rr=10,T=10,B=24;
+  const min=Math.min(...h),max=Math.max(...h),span=(max-min)||1;
+  const x=i=>L+i*(W-L-Rr)/(h.length-1), y=v=>T+(H-T-B)*(1-(v-min)/span);
+  const pts=h.map((v,i)=>`${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+  const ticks=[min,min+span/2,max];
+  el.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Global cost per round">
+    ${ticks.map(v=>`<line class="grid" x1="${L}" x2="${W-Rr}" y1="${y(v)}" y2="${y(v)}"/><text class="ax" x="${L-6}" y="${y(v)+3}" text-anchor="end">${v.toFixed(1)}</text>`).join('')}
+    <polygon class="ar" points="${x(0)},${y(min)} ${pts} ${x(h.length-1)},${y(min)}"/>
+    <polyline class="ln" points="${pts}"/>
+    <circle class="pt" cx="${x(h.length-1)}" cy="${y(h[h.length-1])}" r="4"/>
+    <text class="ax" x="${L}" y="${H-6}">round 1</text><text class="ax" x="${W-Rr}" y="${H-6}" text-anchor="end">round ${h.length}</text>
+  </svg><div class="cap">Global cost (hard-violation penalty − weighted utility). Last round: ${h[h.length-1].toFixed(2)}.</div>`;
+}
+
+function tip(e,id){const s=R.sessions.find(x=>x.id===id); const t=document.getElementById('tip');
+  const u=s.utilities||{}; t.innerHTML=`<b>${esc(s.title)}</b><div class="u">${s.participants.map(p=>`<span>${esc(p)}</span><span>${u[p]==null?'—':u[p].toFixed(2)}</span>`).join('')}</div>`;
+  t.style.display='block'; const x=Math.min(e.clientX+14,innerWidth-280), yy=Math.min(e.clientY+14,innerHeight-160); t.style.left=x+'px'; t.style.top=yy+'px';}
+function hideTip(){document.getElementById('tip').style.display='none'}
+
+document.getElementById('file').addEventListener('change',ev=>{const f=ev.target.files[0]; if(!f)return; const rd=new FileReader();
+  rd.onload=()=>{try{render(JSON.parse(rd.result))}catch(err){alert('Not a dcop result JSON: '+err.message)}}; rd.readAsText(f);});
+
+if(RESULT) render(RESULT); else document.getElementById('tt').innerHTML='<div class="empty" style="grid-column:1/-1">No result embedded. Load a JSON produced by <code>python -m dcop.cli solve … --json</code>.</div>';
+</script>

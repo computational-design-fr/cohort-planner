@@ -1,0 +1,17 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Cohort Planner · reports</title>
+<style>
+body{font:15px/1.6 "Public Sans",system-ui,sans-serif;max-width:640px;margin:48px auto;padding:0 20px;color:#17201C;background:#F4F6F3}
+h1{font-size:26px;margin:0 0 4px}p{color:#5D6A63}li{margin:6px 0}a{color:#0E6F78}code{font-family:ui-monospace,Menlo,monospace;font-size:13px}
+</style>
+<h1>Cohort Planner</h1>
+<p>Standalone visual reports produced by <code>python -m dcop.cli solve … --html</code>: week grid, per-session utilities and relaxation traces, participant heatmap, solver convergence.</p>
+<ul>
+<li><a href="reports/cohort_week.html">cohort_week</a> — hand-made 8-person week, a weekly series, one impossible pair that falls back to asynchronous work</li>
+<li><a href="reports/cohort_small.html">cohort_small</a> — nominal 5-person case</li>
+<li><a href="reports/cohort_large.html">cohort_large</a> — 34 people, 19 meetings</li>
+<li><a href="reports/cohort_conflict.html">cohort_conflict</a> — over-constrained cohort that exercises the relaxation ladder</li>
+<li><a href="reports/cohort_graph.synced.html">cohort_graph.synced</a> — real organizer availability pulled from Microsoft Graph</li>
+</ul>
+<p><a href="https://github.com/computational-design-fr/cohort-planner">Source on GitHub</a></p>
