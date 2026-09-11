@@ -91,7 +91,7 @@ Busy = horizon minus the union of `free` windows (a day without suggestions is f
 | `examples/cohort_week.json` | 8 people, 7 meetings incl. a weekly series and an impossible pair | hand-made |
 | `examples/cohort_small.json` | 5 people, 4 meetings, nominal | `generate.py --seed 1 --learners 4 --mentors 1 --meetings 3 --rooms 1` |
 | `examples/cohort_large.json` | 34 people, 5 resources, 19 meetings | `generate.py --seed 1 --learners 30 --mentors 4 --meetings 18 --rooms 4` |
-| `examples/cohort_conflict.json` | saturated mentors, 4-seat rooms → relaxation ladder | `generate.py --seed 7 … --preset conflict` |
+| `examples/cohort_conflict.json` | busy mentors, 6-seat rooms, every meeting has an async plan B → relaxation ladder | `generate.py --seed 7 … --preset conflict` |
 | `examples/cohort_graph(.synced).json` | real organizer availability from Graph | `sync-graph` |
 
 ## Visual report

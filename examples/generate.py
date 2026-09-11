@@ -58,15 +58,15 @@ def generate(seed: int, learners: int, mentors: int, meetings: int, days: int = 
         prof = rng.choice(list(PROFILES))
         pref, off, load = PROFILES[prof]
         participants.append({"id": f"mentor-{i+1:02d}", "role": "facilitator", "preferred_hours": list(pref), "off_hours_utility": off,
-                             "busy": busy_blocks(rng, t0, days, hours, load * (2.2 if tight else 1.0), 0.35 if tight else 0.1)})
+                             "busy": busy_blocks(rng, t0, days, hours, load * (1.5 if tight else 1.0), 0.2 if tight else 0.1)})
     for i in range(learners):
         prof = rng.choice(list(PROFILES))
         pref, off, load = PROFILES[prof]
         participants.append({"id": f"learner-{i+1:02d}", "preferred_hours": list(pref), "off_hours_utility": off,
                              "minimum_acceptance": rng.choice([0.4, 0.5, 0.5, 0.6]),
-                             "busy": busy_blocks(rng, t0, days, hours, load * (1.6 if tight else 1.0), 0.25 if tight else 0.08)})
-    resources = [{"id": f"room-{chr(97+i)}", "kind": "room", "capacity": (4 if tight else rng.choice([6, 8, 12, 20])),
-                  "cost_per_hour": rng.choice([0, 10, 25]), "busy": busy_blocks(rng, t0, days, hours, 1.0 if tight else 0.4, 0.0)}
+                             "busy": busy_blocks(rng, t0, days, hours, load * (1.25 if tight else 1.0), 0.15 if tight else 0.08)})
+    resources = [{"id": f"room-{chr(97+i)}", "kind": "room", "capacity": (6 if tight else rng.choice([6, 8, 12, 20])),
+                  "cost_per_hour": rng.choice([0, 10, 25]), "busy": busy_blocks(rng, t0, days, hours, 0.7 if tight else 0.4, 0.0)}
                  for i in range(rooms)]
     resources.append({"id": "video-1", "kind": "video", "capacity": 50, "cost_per_hour": 0})
     learner_ids = [p["id"] for p in participants if p["role"] == "learner"] if False else [p["id"] for p in participants if "learner" in p["id"]]
@@ -74,7 +74,7 @@ def generate(seed: int, learners: int, mentors: int, meetings: int, days: int = 
     out_meetings = []
     for k in range(meetings):
         topic = TOPICS[k % len(TOPICS)]
-        size = rng.choice([2, 3, 4, 5, 6, 8]) if not tight else rng.choice([4, 5, 6, 8])
+        size = rng.choice([2, 3, 4, 5, 6, 8]) if not tight else rng.choice([3, 4, 5, 6])
         group = rng.sample(learner_ids, min(size, len(learner_ids)))
         m = {"id": f"{topic}-{k+1:02d}", "title": f"{topic.replace('-', ' ').title()} #{k+1}",
              "duration_minutes": rng.choice([30, 60, 60, 90, 120]), "participants": group,
@@ -87,7 +87,7 @@ def generate(seed: int, learners: int, mentors: int, meetings: int, days: int = 
             m["resource"] = rng.choice(resources)["id"]
         if rng.random() < 0.4:
             m["min_attendance"] = max(1, len(group) - 1)
-        if rng.random() < 0.5:
+        if tight or rng.random() < 0.5:  # over-constrained cohorts always carry an async plan B
             m["fallback"] = {"materials": [f"{topic}-notes", "exercise-set"], "deadline": iso(t0 + timedelta(days=days + 2)),
                              "required_evidence": ["submitted-exercise"]}
         out_meetings.append(m)
