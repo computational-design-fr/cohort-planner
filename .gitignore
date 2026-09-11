@@ -1,0 +1,25 @@
+# private / local
+_archives (GH)/
+_archives/
+archives/
+*.gh
+*.3dm
+*.rhl
+CLAUDE.md
+COM.md
+.claude/
+
+# generated
+out/
+*.synced.json
+
+# python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+*.egg-info/
+
+# private notes
+docs/Distributed scheduling of meetings in colearning environment.md
+docs/Structured Comparison.md

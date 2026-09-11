@@ -1,0 +1,28 @@
+{
+ "note": "Real availability for organizer@example.com comes from examples/graph/*.json via `python -m dcop.cli sync-graph`. Other people are fictional.",
+ "horizon": {"start": "2026-09-14T00:00:00+02:00", "days": 5, "hours": [9, 19], "slot_minutes": 30},
+ "participants": [
+  {"id": "sp", "role": "facilitator", "email": "organizer@example.com", "preferred_hours": [10, 18], "busy": []},
+  {"id": "lea", "preferred_hours": [9, 13], "off_hours_utility": 0.3,
+   "busy": [["2026-09-15T09:00:00+02:00", "2026-09-15T19:00:00+02:00"], ["2026-09-18T09:00:00+02:00", "2026-09-18T19:00:00+02:00"]]},
+  {"id": "malik", "preferred_hours": [14, 19], "off_hours_utility": 0.3,
+   "busy": [["2026-09-16T09:00:00+02:00", "2026-09-16T12:00:00+02:00"], ["2026-09-17T09:00:00+02:00", "2026-09-17T14:00:00+02:00"]]},
+  {"id": "sofia", "preferred_hours": [9, 18], "busy": [["2026-09-17T09:00:00+02:00", "2026-09-17T19:00:00+02:00"]]},
+  {"id": "tom", "preferred_hours": [12, 18], "busy": [["2026-09-15T15:00:00+02:00", "2026-09-15T19:00:00+02:00"]]}
+ ],
+ "resources": [
+  {"id": "room-a", "kind": "room", "capacity": 6, "cost_per_hour": 10},
+  {"id": "video-1", "kind": "video", "capacity": 50}
+ ],
+ "meetings": [
+  {"id": "rhino-compute-01", "title": "Rhino Compute — session 1", "duration_minutes": 90, "facilitator": "sp",
+   "participants": ["lea", "malik", "sofia", "tom"], "resource": "room-a", "priority": 80},
+  {"id": "office-hours", "title": "Office hours (weekly)", "duration_minutes": 60, "recurrence_weeks": 2, "facilitator": "sp",
+   "participants": ["lea", "sofia"], "resource": "video-1", "priority": 60},
+  {"id": "peer-review", "title": "Peer review circle", "duration_minutes": 60,
+   "participants": ["malik", "tom", "sofia"], "mandatory": ["sofia"], "min_attendance": 2, "resource": "video-1", "priority": 40},
+  {"id": "monday-kickoff", "title": "Kick-off (organizer unavailable Monday)", "duration_minutes": 30, "facilitator": "sp",
+   "participants": ["lea", "malik", "sofia", "tom"], "priority": 70,
+   "fallback": {"materials": ["kickoff-video"], "deadline": "2026-09-20T23:59:00+02:00", "required_evidence": ["quiz"]}}
+ ]
+}

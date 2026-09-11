@@ -1,0 +1,356 @@
+{
+ "_organizer": "organizer@example.com",
+ "_request": {
+  "participants": [
+   "organizer@example.com"
+  ],
+  "afterDateTime": "2026-09-15T07:00:00Z",
+  "beforeDateTime": "2026-09-15T17:00:00Z",
+  "duration": 30,
+  "maxCandidates": 50
+ },
+ "uri": "availability://meeting/1789132878384",
+ "nowDateTime": "2026-09-11T13:21:18.384Z",
+ "meetingTimeSuggestions": [
+  {
+   "meetingTimeSlot": {
+    "start": {
+     "dateTime": "2026-09-15T07:00:00.0000000",
+     "timeZone": "UTC"
+    },
+    "end": {
+     "dateTime": "2026-09-15T07:30:00.0000000",
+     "timeZone": "UTC"
+    }
+   },
+   "confidence": 100,
+   "organizerAvailability": "free",
+   "attendeeAvailability": [],
+   "locations": [],
+   "suggestionReason": "Suggested because it is one of the nearest times when All attendees are available."
+  },
+  {
+   "meetingTimeSlot": {
+    "start": {
+     "dateTime": "2026-09-15T07:30:00.0000000",
+     "timeZone": "UTC"
+    },
+    "end": {
+     "dateTime": "2026-09-15T08:00:00.0000000",
+     "timeZone": "UTC"
+    }
+   },
+   "confidence": 100,
+   "organizerAvailability": "free",
+   "attendeeAvailability": [],
+   "locations": [],
+   "suggestionReason": "Suggested because it is one of the nearest times when All attendees are available."
+  },
+  {
+   "meetingTimeSlot": {
+    "start": {
+     "dateTime": "2026-09-15T08:00:00.0000000",
+     "timeZone": "UTC"
+    },
+    "end": {
+     "dateTime": "2026-09-15T08:30:00.0000000",
+     "timeZone": "UTC"
+    }
+   },
+   "confidence": 100,
+   "organizerAvailability": "free",
+   "attendeeAvailability": [],
+   "locations": [],
+   "suggestionReason": "Suggested because it is one of the nearest times when All attendees are available."
+  },
+  {
+   "meetingTimeSlot": {
+    "start": {
+     "dateTime": "2026-09-15T08:30:00.0000000",
+     "timeZone": "UTC"
+    },
+    "end": {
+     "dateTime": "2026-09-15T09:00:00.0000000",
+     "timeZone": "UTC"
+    }
+   },
+   "confidence": 100,
+   "organizerAvailability": "free",
+   "attendeeAvailability": [],
+   "locations": [],
+   "suggestionReason": "Suggested because it is one of the nearest times when All attendees are available."
+  },
+  {
+   "meetingTimeSlot": {
+    "start": {
+     "dateTime": "2026-09-15T09:00:00.0000000",
+     "timeZone": "UTC"
+    },
+    "end": {
+     "dateTime": "2026-09-15T09:30:00.0000000",
+     "timeZone": "UTC"
+    }
+   },
+   "confidence": 100,
+   "organizerAvailability": "free",
+   "attendeeAvailability": [],
+   "locations": [],
+   "suggestionReason": "Suggested because it is one of the nearest times when All attendees are available."
+  },
+  {
+   "meetingTimeSlot": {
+    "start": {
+     "dateTime": "2026-09-15T09:30:00.0000000",
+     "timeZone": "UTC"
+    },
+    "end": {
+     "dateTime": "2026-09-15T10:00:00.0000000",
+     "timeZone": "UTC"
+    }
+   },
+   "confidence": 100,
+   "organizerAvailability": "free",
+   "attendeeAvailability": [],
+   "locations": [],
+   "suggestionReason": "Suggested because it is one of the nearest times when All attendees are available."
+  },
+  {
+   "meetingTimeSlot": {
+    "start": {
+     "dateTime": "2026-09-15T10:00:00.0000000",
+     "timeZone": "UTC"
+    },
+    "end": {
+     "dateTime": "2026-09-15T10:30:00.0000000",
+     "timeZone": "UTC"
+    }
+   },
+   "confidence": 100,
+   "organizerAvailability": "free",
+   "attendeeAvailability": [],
+   "locations": [],
+   "suggestionReason": "Suggested because it is one of the nearest times when All attendees are available."
+  },
+  {
+   "meetingTimeSlot": {
+    "start": {
+     "dateTime": "2026-09-15T10:30:00.0000000",
+     "timeZone": "UTC"
+    },
+    "end": {
+     "dateTime": "2026-09-15T11:00:00.0000000",
+     "timeZone": "UTC"
+    }
+   },
+   "confidence": 100,
+   "organizerAvailability": "free",
+   "attendeeAvailability": [],
+   "locations": [],
+   "suggestionReason": "Suggested because it is one of the nearest times when All attendees are available."
+  },
+  {
+   "meetingTimeSlot": {
+    "start": {
+     "dateTime": "2026-09-15T11:00:00.0000000",
+     "timeZone": "UTC"
+    },
+    "end": {
+     "dateTime": "2026-09-15T11:30:00.0000000",
+     "timeZone": "UTC"
+    }
+   },
+   "confidence": 100,
+   "organizerAvailability": "free",
+   "attendeeAvailability": [],
+   "locations": [],
+   "suggestionReason": "Suggested because it is one of the nearest times when All attendees are available."
+  },
+  {
+   "meetingTimeSlot": {
+    "start": {
+     "dateTime": "2026-09-15T11:30:00.0000000",
+     "timeZone": "UTC"
+    },
+    "end": {
+     "dateTime": "2026-09-15T12:00:00.0000000",
+     "timeZone": "UTC"
+    }
+   },
+   "confidence": 100,
+   "organizerAvailability": "free",
+   "attendeeAvailability": [],
+   "locations": [],
+   "suggestionReason": "Suggested because it is one of the nearest times when All attendees are available."
+  },
+  {
+   "meetingTimeSlot": {
+    "start": {
+     "dateTime": "2026-09-15T12:00:00.0000000",
+     "timeZone": "UTC"
+    },
+    "end": {
+     "dateTime": "2026-09-15T12:30:00.0000000",
+     "timeZone": "UTC"
+    }
+   },
+   "confidence": 100,
+   "organizerAvailability": "free",
+   "attendeeAvailability": [],
+   "locations": [],
+   "suggestionReason": "Suggested because it is one of the nearest times when All attendees are available."
+  },
+  {
+   "meetingTimeSlot": {
+    "start": {
+     "dateTime": "2026-09-15T12:30:00.0000000",
+     "timeZone": "UTC"
+    },
+    "end": {
+     "dateTime": "2026-09-15T13:00:00.0000000",
+     "timeZone": "UTC"
+    }
+   },
+   "confidence": 100,
+   "organizerAvailability": "free",
+   "attendeeAvailability": [],
+   "locations": [],
+   "suggestionReason": "Suggested because it is one of the nearest times when All attendees are available."
+  },
+  {
+   "meetingTimeSlot": {
+    "start": {
+     "dateTime": "2026-09-15T13:00:00.0000000",
+     "timeZone": "UTC"
+    },
+    "end": {
+     "dateTime": "2026-09-15T13:30:00.0000000",
+     "timeZone": "UTC"
+    }
+   },
+   "confidence": 100,
+   "organizerAvailability": "free",
+   "attendeeAvailability": [],
+   "locations": [],
+   "suggestionReason": "Suggested because it is one of the nearest times when All attendees are available."
+  },
+  {
+   "meetingTimeSlot": {
+    "start": {
+     "dateTime": "2026-09-15T13:30:00.0000000",
+     "timeZone": "UTC"
+    },
+    "end": {
+     "dateTime": "2026-09-15T14:00:00.0000000",
+     "timeZone": "UTC"
+    }
+   },
+   "confidence": 100,
+   "organizerAvailability": "free",
+   "attendeeAvailability": [],
+   "locations": [],
+   "suggestionReason": "Suggested because it is one of the nearest times when All attendees are available."
+  },
+  {
+   "meetingTimeSlot": {
+    "start": {
+     "dateTime": "2026-09-15T14:00:00.0000000",
+     "timeZone": "UTC"
+    },
+    "end": {
+     "dateTime": "2026-09-15T14:30:00.0000000",
+     "timeZone": "UTC"
+    }
+   },
+   "confidence": 100,
+   "organizerAvailability": "free",
+   "attendeeAvailability": [],
+   "locations": [],
+   "suggestionReason": "Suggested because it is one of the nearest times when All attendees are available."
+  },
+  {
+   "meetingTimeSlot": {
+    "start": {
+     "dateTime": "2026-09-15T14:30:00.0000000",
+     "timeZone": "UTC"
+    },
+    "end": {
+     "dateTime": "2026-09-15T15:00:00.0000000",
+     "timeZone": "UTC"
+    }
+   },
+   "confidence": 100,
+   "organizerAvailability": "free",
+   "attendeeAvailability": [],
+   "locations": [],
+   "suggestionReason": "Suggested because it is one of the nearest times when All attendees are available."
+  },
+  {
+   "meetingTimeSlot": {
+    "start": {
+     "dateTime": "2026-09-15T15:00:00.0000000",
+     "timeZone": "UTC"
+    },
+    "end": {
+     "dateTime": "2026-09-15T15:30:00.0000000",
+     "timeZone": "UTC"
+    }
+   },
+   "confidence": 100,
+   "organizerAvailability": "free",
+   "attendeeAvailability": [],
+   "locations": [],
+   "suggestionReason": "Suggested because it is one of the nearest times when All attendees are available."
+  },
+  {
+   "meetingTimeSlot": {
+    "start": {
+     "dateTime": "2026-09-15T15:30:00.0000000",
+     "timeZone": "UTC"
+    },
+    "end": {
+     "dateTime": "2026-09-15T16:00:00.0000000",
+     "timeZone": "UTC"
+    }
+   },
+   "confidence": 100,
+   "organizerAvailability": "free",
+   "attendeeAvailability": [],
+   "locations": [],
+   "suggestionReason": "Suggested because it is one of the nearest times when All attendees are available."
+  },
+  {
+   "meetingTimeSlot": {
+    "start": {
+     "dateTime": "2026-09-15T16:00:00.0000000",
+     "timeZone": "UTC"
+    },
+    "end": {
+     "dateTime": "2026-09-15T16:30:00.0000000",
+     "timeZone": "UTC"
+    }
+   },
+   "confidence": 100,
+   "organizerAvailability": "free",
+   "attendeeAvailability": [],
+   "locations": [],
+   "suggestionReason": "Suggested because it is one of the nearest times when All attendees are available."
+  },
+  {
+   "meetingTimeSlot": {
+    "start": {
+     "dateTime": "2026-09-15T16:30:00.0000000",
+     "timeZone": "UTC"
+    },
+    "end": {
+     "dateTime": "2026-09-15T17:00:00.0000000",
+     "timeZone": "UTC"
+    }
+   },
+   "confidence": 100,
+   "organizerAvailability": "free",
+   "attendeeAvailability": [],
+   "locations": [],
+   "suggestionReason": "Suggested because it is one of the nearest times when All attendees are available."
+  }
+ ]
+}

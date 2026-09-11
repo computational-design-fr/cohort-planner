@@ -1,0 +1,333 @@
+{
+ "horizon": {
+  "start": "2026-09-14T00:00:00+02:00",
+  "days": 5,
+  "hours": [
+   9,
+   19
+  ],
+  "slot_minutes": 30
+ },
+ "participants": [
+  {
+   "id": "mentor-ana",
+   "role": "facilitator",
+   "preferred_hours": [
+    10,
+    17
+   ],
+   "busy": [
+    [
+     "2026-09-14T09:00:00+02:00",
+     "2026-09-14T13:00:00+02:00"
+    ],
+    [
+     "2026-09-16T14:00:00+02:00",
+     "2026-09-16T19:00:00+02:00"
+    ]
+   ]
+  },
+  {
+   "id": "mentor-bo",
+   "role": "facilitator",
+   "preferred_hours": [
+    9,
+    14
+   ],
+   "busy": [
+    [
+     "2026-09-15T09:00:00+02:00",
+     "2026-09-15T19:00:00+02:00"
+    ],
+    [
+     "2026-09-17T09:00:00+02:00",
+     "2026-09-17T12:00:00+02:00"
+    ]
+   ]
+  },
+  {
+   "id": "lea",
+   "preferred_hours": [
+    9,
+    13
+   ],
+   "off_hours_utility": 0.3,
+   "busy": [
+    [
+     "2026-09-14T14:00:00+02:00",
+     "2026-09-14T19:00:00+02:00"
+    ],
+    [
+     "2026-09-18T09:00:00+02:00",
+     "2026-09-18T19:00:00+02:00"
+    ]
+   ]
+  },
+  {
+   "id": "malik",
+   "preferred_hours": [
+    14,
+    19
+   ],
+   "off_hours_utility": 0.3,
+   "busy": [
+    [
+     "2026-09-15T09:00:00+02:00",
+     "2026-09-15T14:00:00+02:00"
+    ],
+    [
+     "2026-09-16T09:00:00+02:00",
+     "2026-09-16T12:00:00+02:00"
+    ]
+   ]
+  },
+  {
+   "id": "sofia",
+   "preferred_hours": [
+    9,
+    18
+   ],
+   "busy": [
+    [
+     "2026-09-17T09:00:00+02:00",
+     "2026-09-17T19:00:00+02:00"
+    ]
+   ]
+  },
+  {
+   "id": "jun",
+   "preferred_hours": [
+    17,
+    19
+   ],
+   "off_hours_utility": 0.2,
+   "minimum_acceptance": 0.6,
+   "busy": [
+    [
+     "2026-09-14T09:00:00+02:00",
+     "2026-09-14T17:00:00+02:00"
+    ],
+    [
+     "2026-09-15T09:00:00+02:00",
+     "2026-09-15T17:00:00+02:00"
+    ],
+    [
+     "2026-09-16T09:00:00+02:00",
+     "2026-09-16T17:00:00+02:00"
+    ],
+    [
+     "2026-09-17T09:00:00+02:00",
+     "2026-09-17T17:00:00+02:00"
+    ],
+    [
+     "2026-09-18T09:00:00+02:00",
+     "2026-09-18T17:00:00+02:00"
+    ]
+   ]
+  },
+  {
+   "id": "nora",
+   "preferred_hours": [
+    9,
+    12
+   ],
+   "off_hours_utility": 0.35,
+   "busy": [
+    [
+     "2026-09-14T12:00:00+02:00",
+     "2026-09-14T19:00:00+02:00"
+    ],
+    [
+     "2026-09-16T12:00:00+02:00",
+     "2026-09-16T19:00:00+02:00"
+    ],
+    [
+     "2026-09-15T16:00:00+02:00",
+     "2026-09-15T19:00:00+02:00"
+    ],
+    [
+     "2026-09-17T16:00:00+02:00",
+     "2026-09-17T19:00:00+02:00"
+    ],
+    [
+     "2026-09-18T16:00:00+02:00",
+     "2026-09-18T19:00:00+02:00"
+    ]
+   ]
+  },
+  {
+   "id": "tom",
+   "preferred_hours": [
+    12,
+    18
+   ],
+   "busy": [
+    [
+     "2026-09-15T15:00:00+02:00",
+     "2026-09-15T19:00:00+02:00"
+    ]
+   ]
+  }
+ ],
+ "resources": [
+  {
+   "id": "room-a",
+   "kind": "room",
+   "capacity": 6,
+   "cost_per_hour": 10,
+   "busy": [
+    [
+     "2026-09-14T09:00:00+02:00",
+     "2026-09-14T12:00:00+02:00"
+    ]
+   ]
+  },
+  {
+   "id": "room-b",
+   "kind": "room",
+   "capacity": 12,
+   "cost_per_hour": 25
+  },
+  {
+   "id": "video-1",
+   "kind": "video",
+   "capacity": 50
+  }
+ ],
+ "meetings": [
+  {
+   "id": "python-async-03",
+   "title": "Python async — session 3",
+   "duration_minutes": 90,
+   "facilitator": "mentor-ana",
+   "participants": [
+    "lea",
+    "malik",
+    "sofia",
+    "tom"
+   ],
+   "resource": "room-a",
+   "priority": 70
+  },
+  {
+   "id": "geo-weekly",
+   "title": "Geospatial cohort (weekly)",
+   "duration_minutes": 60,
+   "recurrence_weeks": 3,
+   "facilitator": "mentor-bo",
+   "participants": [
+    "lea",
+    "nora",
+    "sofia"
+   ],
+   "resource": "room-a",
+   "priority": 80
+  },
+  {
+   "id": "peer-review-2",
+   "title": "Peer review circle",
+   "duration_minutes": 60,
+   "participants": [
+    "malik",
+    "tom",
+    "nora",
+    "sofia"
+   ],
+   "mandatory": [
+    "sofia"
+   ],
+   "min_attendance": 3,
+   "resource": "video-1",
+   "priority": 40
+  },
+  {
+   "id": "mentors-sync",
+   "title": "Mentors sync",
+   "duration_minutes": 30,
+   "participants": [
+    "mentor-ana",
+    "mentor-bo"
+   ],
+   "mandatory": [
+    "mentor-ana",
+    "mentor-bo"
+   ],
+   "priority": 60
+  },
+  {
+   "id": "big-workshop",
+   "title": "Workshop — everyone",
+   "duration_minutes": 120,
+   "facilitator": "mentor-ana",
+   "participants": [
+    "mentor-bo",
+    "lea",
+    "malik",
+    "sofia",
+    "jun",
+    "nora",
+    "tom"
+   ],
+   "resource": "room-b",
+   "priority": 90,
+   "fallback": {
+    "materials": [
+     "lecture-notes",
+     "exercise-set"
+    ],
+    "deadline": "2026-09-20T23:59:00+02:00",
+    "required_evidence": [
+     "submitted-exercise",
+     "peer-review"
+    ]
+   }
+  },
+  {
+   "id": "jun-onboarding",
+   "title": "Onboarding Jun (off-hours only)",
+   "duration_minutes": 60,
+   "facilitator": "mentor-bo",
+   "participants": [
+    "jun"
+   ],
+   "mandatory": [
+    "jun"
+   ],
+   "priority": 30,
+   "fallback": {
+    "materials": [
+     "onboarding-video"
+    ],
+    "deadline": "2026-09-25T23:59:00+02:00",
+    "required_evidence": [
+     "quiz"
+    ]
+   }
+  },
+  {
+   "id": "jun-nora-pair",
+   "title": "Pair programming Jun + Nora (no common slot)",
+   "duration_minutes": 60,
+   "participants": [
+    "jun",
+    "nora"
+   ],
+   "mandatory": [
+    "jun",
+    "nora"
+   ],
+   "priority": 20,
+   "fallback": {
+    "materials": [
+     "pairing-kata",
+     "recording"
+    ],
+    "deadline": "2026-09-20T23:59:00+02:00",
+    "required_evidence": [
+     "submitted-exercise",
+     "peer-review"
+    ]
+   }
+  }
+ ]
+}

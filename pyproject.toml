@@ -1,0 +1,13 @@
+[project]
+name = "dcop"
+version = "0.1.0"
+description = "Distributed meeting scheduling for co-learning environments (DCOP: DSA / MGM + bid-based negotiation)"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--tb=short -q"

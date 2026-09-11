@@ -1,0 +1,308 @@
+{
+ "generated": {
+  "seed": 1,
+  "learners": 4,
+  "mentors": 1,
+  "meetings": 3,
+  "preset": "normal"
+ },
+ "horizon": {
+  "start": "2026-09-14T00:00:00+02:00",
+  "days": 5,
+  "hours": [
+   9,
+   19
+  ],
+  "slot_minutes": 30
+ },
+ "participants": [
+  {
+   "id": "mentor-01",
+   "role": "facilitator",
+   "preferred_hours": [
+    9,
+    18
+   ],
+   "off_hours_utility": 0.5,
+   "busy": [
+    [
+     "2026-09-14T10:00:00+02:00",
+     "2026-09-14T13:00:00+02:00"
+    ],
+    [
+     "2026-09-14T16:00:00+02:00",
+     "2026-09-14T19:00:00+02:00"
+    ],
+    [
+     "2026-09-15T12:00:00+02:00",
+     "2026-09-15T13:00:00+02:00"
+    ],
+    [
+     "2026-09-16T18:00:00+02:00",
+     "2026-09-16T19:00:00+02:00"
+    ],
+    [
+     "2026-09-16T16:00:00+02:00",
+     "2026-09-16T18:00:00+02:00"
+    ],
+    [
+     "2026-09-17T12:00:00+02:00",
+     "2026-09-17T13:00:00+02:00"
+    ],
+    [
+     "2026-09-18T17:00:00+02:00",
+     "2026-09-18T18:00:00+02:00"
+    ],
+    [
+     "2026-09-18T15:00:00+02:00",
+     "2026-09-18T16:00:00+02:00"
+    ]
+   ]
+  },
+  {
+   "id": "learner-01",
+   "preferred_hours": [
+    17,
+    19
+   ],
+   "off_hours_utility": 0.2,
+   "minimum_acceptance": 0.4,
+   "busy": [
+    [
+     "2026-09-14T09:00:00+02:00",
+     "2026-09-14T19:00:00+02:00"
+    ],
+    [
+     "2026-09-15T09:00:00+02:00",
+     "2026-09-15T19:00:00+02:00"
+    ],
+    [
+     "2026-09-16T09:00:00+02:00",
+     "2026-09-16T19:00:00+02:00"
+    ],
+    [
+     "2026-09-17T09:00:00+02:00",
+     "2026-09-17T19:00:00+02:00"
+    ],
+    [
+     "2026-09-18T09:00:00+02:00",
+     "2026-09-18T19:00:00+02:00"
+    ]
+   ]
+  },
+  {
+   "id": "learner-02",
+   "preferred_hours": [
+    9,
+    13
+   ],
+   "off_hours_utility": 0.3,
+   "minimum_acceptance": 0.6,
+   "busy": [
+    [
+     "2026-09-14T09:00:00+02:00",
+     "2026-09-14T19:00:00+02:00"
+    ],
+    [
+     "2026-09-15T09:00:00+02:00",
+     "2026-09-15T19:00:00+02:00"
+    ],
+    [
+     "2026-09-16T09:00:00+02:00",
+     "2026-09-16T19:00:00+02:00"
+    ],
+    [
+     "2026-09-17T09:00:00+02:00",
+     "2026-09-17T19:00:00+02:00"
+    ],
+    [
+     "2026-09-18T09:00:00+02:00",
+     "2026-09-18T19:00:00+02:00"
+    ]
+   ]
+  },
+  {
+   "id": "learner-03",
+   "preferred_hours": [
+    9,
+    18
+   ],
+   "off_hours_utility": 0.5,
+   "minimum_acceptance": 0.5,
+   "busy": [
+    [
+     "2026-09-14T09:00:00+02:00",
+     "2026-09-14T10:00:00+02:00"
+    ],
+    [
+     "2026-09-15T17:00:00+02:00",
+     "2026-09-15T19:00:00+02:00"
+    ],
+    [
+     "2026-09-15T18:00:00+02:00",
+     "2026-09-15T19:00:00+02:00"
+    ],
+    [
+     "2026-09-16T13:00:00+02:00",
+     "2026-09-16T14:00:00+02:00"
+    ],
+    [
+     "2026-09-17T17:00:00+02:00",
+     "2026-09-17T18:00:00+02:00"
+    ],
+    [
+     "2026-09-17T17:00:00+02:00",
+     "2026-09-17T18:00:00+02:00"
+    ],
+    [
+     "2026-09-17T15:00:00+02:00",
+     "2026-09-17T16:00:00+02:00"
+    ]
+   ]
+  },
+  {
+   "id": "learner-04",
+   "preferred_hours": [
+    13,
+    19
+   ],
+   "off_hours_utility": 0.35,
+   "minimum_acceptance": 0.5,
+   "busy": [
+    [
+     "2026-09-15T09:00:00+02:00",
+     "2026-09-15T11:00:00+02:00"
+    ],
+    [
+     "2026-09-15T16:00:00+02:00",
+     "2026-09-15T17:00:00+02:00"
+    ],
+    [
+     "2026-09-16T11:00:00+02:00",
+     "2026-09-16T12:00:00+02:00"
+    ],
+    [
+     "2026-09-18T10:00:00+02:00",
+     "2026-09-18T11:00:00+02:00"
+    ]
+   ]
+  }
+ ],
+ "resources": [
+  {
+   "id": "room-a",
+   "kind": "room",
+   "capacity": 6,
+   "cost_per_hour": 10,
+   "busy": [
+    [
+     "2026-09-16T14:00:00+02:00",
+     "2026-09-16T16:00:00+02:00"
+    ],
+    [
+     "2026-09-17T11:00:00+02:00",
+     "2026-09-17T13:00:00+02:00"
+    ],
+    [
+     "2026-09-18T13:00:00+02:00",
+     "2026-09-18T16:00:00+02:00"
+    ]
+   ]
+  },
+  {
+   "id": "video-1",
+   "kind": "video",
+   "capacity": 50,
+   "cost_per_hour": 0
+  }
+ ],
+ "meetings": [
+  {
+   "id": "python-async-01",
+   "title": "Python Async #1",
+   "duration_minutes": 30,
+   "participants": [
+    "learner-03",
+    "learner-02",
+    "learner-04",
+    "learner-01"
+   ],
+   "priority": 59,
+   "facilitator": "mentor-01",
+   "resource": "video-1"
+  },
+  {
+   "id": "geospatial-02",
+   "title": "Geospatial #2",
+   "duration_minutes": 30,
+   "participants": [
+    "learner-04",
+    "learner-01",
+    "learner-03"
+   ],
+   "priority": 70,
+   "facilitator": "mentor-01",
+   "resource": "video-1",
+   "fallback": {
+    "materials": [
+     "geospatial-notes",
+     "exercise-set"
+    ],
+    "deadline": "2026-09-21T00:00:00+02:00",
+    "required_evidence": [
+     "submitted-exercise"
+    ]
+   }
+  },
+  {
+   "id": "rhino-compute-03",
+   "title": "Rhino Compute #3",
+   "duration_minutes": 120,
+   "participants": [
+    "learner-04",
+    "learner-01",
+    "learner-03",
+    "learner-02"
+   ],
+   "priority": 61,
+   "facilitator": "mentor-01",
+   "recurrence_weeks": 3,
+   "resource": "room-a",
+   "fallback": {
+    "materials": [
+     "rhino-compute-notes",
+     "exercise-set"
+    ],
+    "deadline": "2026-09-21T00:00:00+02:00",
+    "required_evidence": [
+     "submitted-exercise"
+    ]
+   }
+  },
+  {
+   "id": "pair-impossible",
+   "title": "Pair kata (no common slot)",
+   "duration_minutes": 60,
+   "participants": [
+    "learner-01",
+    "learner-02"
+   ],
+   "mandatory": [
+    "learner-01",
+    "learner-02"
+   ],
+   "priority": 10,
+   "fallback": {
+    "materials": [
+     "kata",
+     "recording"
+    ],
+    "deadline": "2026-09-21T00:00:00+02:00",
+    "required_evidence": [
+     "submitted-exercise",
+     "peer-review"
+    ]
+   }
+  }
+ ]
+}
