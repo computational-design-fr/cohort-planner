@@ -6,7 +6,7 @@
   --accent:#0E6F78;--accent-ink:#FFFFFF;--accent-soft:#DDEFF0;
   --ok:#2F7D4E;--ok-soft:#E1F0E6;--warn:#B8791B;--warn-soft:#F7ECD6;--bad:#B23A31;--bad-soft:#F5DEDC;
   --c1:#3D7EBF;--c2:#C5642B;--c3:#6E9A2C;--c4:#9557B5;--c5:#C7A11F;--c6:#2C9A8D;--c7:#C34C7A;--c8:#7A6E52;
-  --heat0:#EEF4F3;--heat1:#0E6F78;
+  --heat0:#EEF4F3;--heat1:#0E6F78;--pref:rgba(14,111,120,.07);
   --display:"Bricolage Grotesque","Public Sans",system-ui,sans-serif;--body:"Public Sans",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
   --slot:22px;
 }
@@ -15,57 +15,77 @@
   --accent:#5CC3CC;--accent-ink:#0E1A1B;--accent-soft:#1C3538;
   --ok:#6CC08F;--ok-soft:#1D3327;--warn:#E0A94E;--warn-soft:#3A2D14;--bad:#E4716A;--bad-soft:#3E1F1C;
   --c1:#6FA3DA;--c2:#E08A55;--c3:#98C053;--c4:#B98BD4;--c5:#E0C04A;--c6:#5CC0B3;--c7:#E07AA3;--c8:#B0A282;
-  --heat0:#1E2A27;--heat1:#7ED9E0;
+  --heat0:#1E2A27;--heat1:#7ED9E0;--pref:rgba(92,195,204,.09);
 }}
 :root[data-theme="dark"]{
   --ground:#101614;--surface:#182019;--ink:#E7ECE8;--muted:#96A39B;--line:#2A3630;--line-soft:#212B26;
   --accent:#5CC3CC;--accent-ink:#0E1A1B;--accent-soft:#1C3538;
   --ok:#6CC08F;--ok-soft:#1D3327;--warn:#E0A94E;--warn-soft:#3A2D14;--bad:#E4716A;--bad-soft:#3E1F1C;
   --c1:#6FA3DA;--c2:#E08A55;--c3:#98C053;--c4:#B98BD4;--c5:#E0C04A;--c6:#5CC0B3;--c7:#E07AA3;--c8:#B0A282;
-  --heat0:#1E2A27;--heat1:#7ED9E0;
+  --heat0:#1E2A27;--heat1:#7ED9E0;--pref:rgba(92,195,204,.09);
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--ground);color:var(--ink);font:14px/1.5 var(--body);}
+body{margin:0;background:var(--ground);color:var(--ink);font:14px/1.5 var(--body)}
 a{color:var(--accent)}
+button{font:inherit;color:inherit;background:none;border:1px solid var(--line);border-radius:4px;padding:4px 9px;cursor:pointer}
+button:hover{border-color:var(--accent)}
+button:focus-visible,.blk:focus-visible,.row:focus-visible,.heat th button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 header{display:flex;flex-wrap:wrap;align-items:flex-end;gap:16px 32px;padding:22px 28px 14px;border-bottom:1px solid var(--line)}
 h1{font:700 30px/1.05 var(--display);margin:0;letter-spacing:-.01em;text-wrap:balance}
 .sub{color:var(--muted);margin-top:4px}
-.stats{display:flex;gap:22px;margin-left:auto;font-variant-numeric:tabular-nums}
-.stat{display:flex;flex-direction:column;gap:2px;min-width:64px}
+.stats{display:flex;flex-wrap:wrap;gap:18px 22px;margin-left:auto;font-variant-numeric:tabular-nums}
+.stat{display:flex;flex-direction:column;gap:2px;min-width:60px}
 .stat b{font:500 22px/1 var(--display)}
+.stat b small{font:500 12px/1 var(--mono);color:var(--muted);margin-left:2px}
 .stat span{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.stat.warn b{color:var(--warn)}.stat.bad b{color:var(--bad)}
 .load{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
 .load input{font:inherit;max-width:190px}
-main{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:20px;padding:20px 28px 40px}
+main{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;padding:20px 28px 40px}
 @media (max-width:980px){main{grid-template-columns:1fr}}
-section h2{font:700 16px/1.2 var(--display);margin:0 0 10px;letter-spacing:-.005em}
+section h2{font:700 16px/1.2 var(--display);margin:0 0 10px;letter-spacing:-.005em;display:flex;align-items:baseline;gap:10px}
+section h2 small{font:400 12px/1 var(--body);color:var(--muted)}
 .panel{background:var(--surface);border:1px solid var(--line);border-radius:6px}
+/* focus bar */
+.focus{display:none;align-items:center;gap:10px;margin:0 0 10px;padding:8px 12px;background:var(--accent-soft);border-radius:6px;font-size:13px}
+.focus.on{display:flex}
+.focus b{font-weight:600}
+.focus .hint{color:var(--muted);font-size:12px}
 /* timetable */
 .tt-wrap{overflow-x:auto}
 .tt{display:grid;grid-template-columns:52px repeat(var(--days,5),minmax(120px,1fr));min-width:660px}
-.tt .hd{position:sticky;top:0;padding:8px 10px;font:600 12px/1.2 var(--body);letter-spacing:.04em;text-transform:uppercase;border-bottom:1px solid var(--line);border-left:1px solid var(--line-soft);background:var(--surface)}
+.tt .hd{position:sticky;top:0;z-index:4;padding:8px 10px;font:600 12px/1.2 var(--body);letter-spacing:.04em;text-transform:uppercase;border-bottom:1px solid var(--line);border-left:1px solid var(--line-soft);background:var(--surface)}
 .tt .hd small{display:block;font:400 11px/1.4 var(--mono);color:var(--muted);text-transform:none;letter-spacing:0}
-.tt .corner{border-bottom:1px solid var(--line)}
+.tt .corner{border-bottom:1px solid var(--line);position:sticky;top:0;z-index:4;background:var(--surface)}
 .tt .hours{position:relative;border-right:1px solid var(--line)}
 .tt .hours div{position:absolute;right:8px;transform:translateY(-50%);font:400 11px/1 var(--mono);color:var(--muted)}
 .tt .day{position:relative;border-left:1px solid var(--line-soft);background:
   repeating-linear-gradient(to bottom,transparent 0,transparent calc(var(--slot)*2 - 1px),var(--line-soft) calc(var(--slot)*2 - 1px),var(--line-soft) calc(var(--slot)*2))}
-.blk{position:absolute;left:4px;right:4px;border-radius:4px;padding:5px 7px;overflow:hidden;cursor:pointer;
+.tt .pref{position:absolute;left:0;right:0;background:var(--pref);pointer-events:none}
+.blk{position:absolute;border-radius:4px;padding:5px 7px;overflow:hidden;cursor:pointer;
   background:color-mix(in srgb,var(--c) 18%,var(--surface));border-left:3px solid var(--c);color:var(--ink);
-  transition:box-shadow .12s, transform .12s}
-.blk:hover,.blk:focus-visible{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--c);outline:none;z-index:2}
+  transition:box-shadow .12s,opacity .12s}
+.blk:hover{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--c);z-index:2}
 .blk.sel{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--accent);z-index:3}
-.blk.dim{opacity:.35}
+.blk.dim{opacity:.28}
 .blk .t{font:600 12px/1.25 var(--body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .blk .m{font:400 11px/1.3 var(--mono);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .blk .rec{font:500 10px/1 var(--mono);background:var(--c);color:var(--surface);border-radius:3px;padding:2px 4px;margin-left:4px}
+.blk .relx{font:500 10px/1 var(--mono);color:var(--warn);margin-left:4px}
+/* off-grid strip */
+.offgrid{display:flex;flex-wrap:wrap;gap:8px;padding:10px 12px;border-top:1px solid var(--line-soft)}
+.offgrid .chip{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:4px;border:1px dashed var(--line);cursor:pointer;font-size:12px;background:var(--surface)}
+.offgrid .chip:hover{border-color:var(--accent)}
+.offgrid .chip.sel{border-style:solid;border-color:var(--accent);background:var(--accent-soft)}
+.offgrid .lbl{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);align-self:center;margin-right:4px}
 /* rail */
 .rail{display:flex;flex-direction:column;gap:18px}
-.list{display:flex;flex-direction:column}
+.list{display:flex;flex-direction:column;max-height:420px;overflow:auto}
 .row{display:grid;grid-template-columns:8px 1fr auto;gap:10px;align-items:center;padding:9px 12px;border-top:1px solid var(--line-soft);cursor:pointer}
 .row:first-child{border-top:0}
 .row:hover{background:var(--ground)}
 .row.sel{background:var(--accent-soft)}
+.row.dim{opacity:.4}
 .row .sw{width:8px;height:8px;border-radius:2px;background:var(--c,var(--muted))}
 .row .n{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .row .w{font:400 11px/1.4 var(--mono);color:var(--muted)}
@@ -75,30 +95,37 @@ section h2{font:700 16px/1.2 var(--display);margin:0 0 10px;letter-spacing:-.005
 .pill.escalated{background:var(--bad-soft);color:var(--bad)}
 .detail{padding:12px 14px;display:flex;flex-direction:column;gap:10px}
 .detail h3{font:700 15px/1.25 var(--display);margin:0}
-.kv{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:12px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:12px;margin:0}
 .kv dt{color:var(--muted)}.kv dd{margin:0;font-family:var(--mono)}
 .bars{display:flex;flex-direction:column;gap:4px}
-.bar{display:grid;grid-template-columns:78px 1fr 34px;gap:8px;align-items:center;font-size:12px}
-.bar .id{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar{display:grid;grid-template-columns:86px 1fr 34px;gap:8px;align-items:center;font-size:12px}
+.bar .id{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+.bar .id:hover{color:var(--accent)}
 .bar .tr{height:8px;background:var(--line-soft);border-radius:4px;overflow:hidden}
 .bar .fl{height:100%;background:var(--accent);border-radius:4px}
+.bar.low .fl{background:var(--warn)}
 .bar .v{font-family:var(--mono);text-align:right;color:var(--muted)}
 .bar.mand .id::after{content:" *";color:var(--bad)}
+.note{font-size:11px;color:var(--muted)}
 .trace{margin:0;padding:0 0 0 14px;font:400 11px/1.5 var(--mono);color:var(--muted)}
 .trace li.last{color:var(--ink)}
 .empty{color:var(--muted);font-size:12px;padding:12px 14px}
 /* bottom */
 .bottom{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px}
 @media (max-width:980px){.bottom{grid-template-columns:1fr}}
-.heat-wrap{overflow-x:auto;padding:12px}
+.heat-wrap{overflow:auto;padding:12px;max-height:520px}
 .heat{border-collapse:separate;border-spacing:2px;font-variant-numeric:tabular-nums}
 .heat th{font:500 11px/1.2 var(--mono);color:var(--muted);text-align:left;padding:2px 6px 6px 2px;white-space:nowrap}
-.heat th.col{writing-mode:vertical-rl;transform:rotate(180deg);text-align:left;padding:0 0 0 4px;max-height:120px;overflow:hidden}
+.heat th button{border:0;padding:2px 4px;font:inherit;color:inherit;border-radius:3px}
+.heat th button:hover{background:var(--accent-soft);color:var(--ink)}
+.heat tr.on th button{background:var(--accent);color:var(--accent-ink)}
+.heat th.col{writing-mode:vertical-rl;transform:rotate(180deg);text-align:left;padding:0 0 0 4px;max-height:130px;overflow:hidden;text-overflow:ellipsis}
+.heat th.col.sel{color:var(--accent)}
 .heat td{width:26px;height:22px;border-radius:3px;background:var(--line-soft)}
-.heat td.u{background:color-mix(in srgb,var(--heat1) calc(var(--p)*100%),var(--heat0))}
+.heat td.u{background:color-mix(in srgb,var(--heat1) calc(var(--p)*100%),var(--heat0));cursor:pointer}
 .heat td.u:hover{outline:2px solid var(--accent)}
-.heat td.debt{background:none;font:400 11px/1 var(--mono);color:var(--muted);text-align:right;padding-right:4px;width:auto}
-.legend{display:flex;gap:14px;align-items:center;font-size:11px;color:var(--muted);padding:0 12px 12px}
+.heat td.debt,.heat td.mean{background:none;font:400 11px/1 var(--mono);color:var(--muted);text-align:right;padding-right:4px;width:auto;white-space:nowrap}
+.legend{display:flex;flex-wrap:wrap;gap:14px;align-items:center;font-size:11px;color:var(--muted);padding:0 12px 12px}
 .legend i{display:inline-block;width:40px;height:8px;border-radius:4px;background:linear-gradient(90deg,var(--heat0),var(--heat1));vertical-align:middle;margin-right:6px}
 .chart{padding:12px 14px 6px}
 .chart svg{width:100%;height:150px;display:block}
@@ -108,10 +135,15 @@ section h2{font:700 16px/1.2 var(--display);margin:0 0 10px;letter-spacing:-.005
 .chart .ar{fill:var(--accent);opacity:.12}
 .chart .pt{fill:var(--accent);stroke:var(--surface);stroke-width:2}
 .chart .cap{font-size:11px;color:var(--muted);margin:6px 0 4px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 14px 12px;font-variant-numeric:tabular-nums}
+.kpi{border-top:1px solid var(--line-soft);padding-top:6px}
+.kpi b{display:block;font:500 18px/1.1 var(--display)}
+.kpi span{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 #tip{position:fixed;z-index:20;pointer-events:none;background:var(--ink);color:var(--ground);padding:8px 10px;border-radius:5px;font-size:12px;max-width:260px;display:none;box-shadow:0 6px 20px rgba(0,0,0,.25)}
 #tip b{display:block;margin-bottom:4px}
 #tip .u{display:grid;grid-template-columns:auto auto;gap:1px 12px;font-family:var(--mono);font-size:11px}
 @media (prefers-reduced-motion: reduce){.blk{transition:none}}
+@media print{header .load,.focus,#tip{display:none!important}main{padding:0}.panel{border-color:#999}}
 </style>
 
 <header>
@@ -125,30 +157,34 @@ section h2{font:700 16px/1.2 var(--display);margin:0 0 10px;letter-spacing:-.005
 
 <main>
   <section>
-    <h2>Week grid</h2>
-    <div class="panel tt-wrap"><div class="tt" id="tt"></div></div>
+    <h2>Week grid <small id="gridcap"></small></h2>
+    <div class="focus" id="focus"></div>
+    <div class="panel">
+      <div class="tt-wrap"><div class="tt" id="tt"></div></div>
+      <div class="offgrid" id="offgrid" hidden></div>
+    </div>
   </section>
   <aside class="rail">
     <section>
-      <h2>Sessions</h2>
+      <h2>Sessions <small id="listcap"></small></h2>
       <div class="panel list" id="list"></div>
     </section>
     <section>
       <h2>Selected session</h2>
-      <div class="panel" id="detail"><div class="empty">Click a block or a row.</div></div>
+      <div class="panel" id="detail"><div class="empty">Click a block, a chip or a row. Esc clears.</div></div>
     </section>
   </aside>
   <div class="bottom">
     <section>
-      <h2>Who got what · utility per participant</h2>
+      <h2>Who got what <small>utility per participant · click a name to focus</small></h2>
       <div class="panel">
         <div class="heat-wrap"><table class="heat" id="heat"></table></div>
-        <div class="legend"><span><i></i>0 → 1 utility</span><span>blank = not invited</span><span>D = cumulative inconvenience debt</span></div>
+        <div class="legend"><span><i></i>0 → 1 utility</span><span>blank = not invited</span><span>◆ facilitator</span><span>ū = mean utility</span><span>D = cumulative inconvenience debt</span></div>
       </div>
     </section>
     <section>
-      <h2>Solver convergence</h2>
-      <div class="panel chart" id="chart"></div>
+      <h2>Solver <small id="solvercap"></small></h2>
+      <div class="panel"><div class="chart" id="chart"></div><div class="kpis" id="kpis"></div></div>
     </section>
   </div>
 </main>
@@ -158,7 +194,7 @@ section h2{font:700 16px/1.2 var(--display);margin:0 0 10px;letter-spacing:-.005
 const RESULT = /*__DCOP_RESULT__*/{"solver": "mgm", "rounds": 5, "messages": 132, "cost_history": [-7.7907, -9.3607, -9.3607, -9.3607, -9.3607], "violations": [], "horizon": {"start": "2026-09-14T09:00:00+02:00", "end": "2026-09-18T19:00:00+02:00"}, "participants": [{"id": "sp", "role": "facilitator", "debt": 0.15, "preferred_hours": [10, 18]}, {"id": "lea", "role": "learner", "debt": 1.4, "preferred_hours": [9, 13]}, {"id": "malik", "role": "learner", "debt": 0.1, "preferred_hours": [14, 19]}, {"id": "sofia", "role": "learner", "debt": 0.0, "preferred_hours": [9, 18]}, {"id": "tom", "role": "learner", "debt": 0.0, "preferred_hours": [12, 18]}], "sessions": [{"id": "rhino-compute-01", "title": "Rhino Compute — session 1", "status": "confirmed", "slot": {"id": "wed16-1600", "start": "2026-09-16T16:00:00+02:00", "end": "2026-09-16T17:30:00+02:00"}, "recurrence_weeks": 1, "participants": ["sp", "lea", "malik", "sofia", "tom"], "mandatory": ["sp"], "resource": "room-a", "duration_minutes": 90, "priority": 80, "score": 0.55, "utilities": {"sp": 1.0, "lea": 0.3, "malik": 0.9, "sofia": 1.0, "tom": 1.0}, "min_utility": 0.3, "relaxation": null, "trace": ["published wed16-1600"]}, {"id": "monday-kickoff", "title": "Kick-off (organizer unavailable Monday)", "status": "confirmed", "slot": {"id": "wed16-1400", "start": "2026-09-16T14:00:00+02:00", "end": "2026-09-16T14:30:00+02:00"}, "recurrence_weeks": 1, "participants": ["sp", "lea", "malik", "sofia", "tom"], "mandatory": ["sp"], "resource": null, "duration_minutes": 30, "priority": 70, "score": 1.99, "utilities": {"sp": 0.95, "lea": 0.3, "malik": 1.0, "sofia": 1.0, "tom": 1.0}, "min_utility": 0.3, "relaxation": null, "trace": ["published wed16-1400"]}, {"id": "office-hours", "title": "Office hours (weekly)", "status": "confirmed", "slot": {"id": "wed16-1130", "start": "2026-09-16T11:30:00+02:00", "end": "2026-09-16T12:30:00+02:00"}, "recurrence_weeks": 2, "participants": ["sp", "lea", "sofia"], "mandatory": ["sp"], "resource": "video-1", "duration_minutes": 60, "priority": 60, "score": 2.843, "utilities": {"sp": 0.95, "lea": 1.0, "sofia": 1.0}, "min_utility": 0.95, "relaxation": null, "trace": ["published wed16-1130"]}, {"id": "peer-review", "title": "Peer review circle", "status": "confirmed", "slot": {"id": "mon14-1200", "start": "2026-09-14T12:00:00+02:00", "end": "2026-09-14T13:00:00+02:00"}, "recurrence_weeks": 1, "participants": ["malik", "tom", "sofia"], "mandatory": ["sofia"], "resource": "video-1", "duration_minutes": 60, "priority": 40, "score": 2.333, "utilities": {"tom": 1.0, "sofia": 1.0}, "min_utility": 1.0, "relaxation": null, "trace": ["published mon14-1200"]}]};
 const COLORS = ['--c1','--c2','--c3','--c4','--c5','--c6','--c7','--c8'];
 const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-let R = null, sel = null, colorOf = {};
+let R = null, sel = null, person = null, colorOf = {};
 
 function iso(s){ // keep the schedule's own wall-clock, ignore browser zone
   const m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/.exec(s);
@@ -166,44 +202,58 @@ function iso(s){ // keep the schedule's own wall-clock, ignore browser zone
 }
 function hm(s){const t=iso(s);return `${String(t.h).padStart(2,'0')}:${String(t.min).padStart(2,'0')}`}
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+const byId = id => R.sessions.find(s=>s.id===id);
+const confirmed = () => R.sessions.filter(s=>s.status==='confirmed');
 
 function render(r){
-  R = r; sel = null;
-  const conf = r.sessions.filter(s=>s.status==='confirmed');
+  R = r; sel = null; person = null;
   colorOf = {}; r.sessions.forEach((s,i)=>colorOf[s.id]=COLORS[i%COLORS.length]);
+  const conf = confirmed();
   document.getElementById('sub').textContent = `${r.sessions.length} sessions · ${r.participants.length} people · solver ${r.solver.toUpperCase()}`;
-  const st = [['confirmed',conf.length],['async / escalated',r.sessions.length-conf.length],['rounds',r.rounds],['messages',r.messages],['violations',r.violations.length]];
-  document.getElementById('stats').innerHTML = st.map(([k,v])=>`<div class="stat"><b>${v}</b><span>${k}</span></div>`).join('');
-  renderGrid(conf); renderList(); renderHeat(conf); renderChart(); showDetail(null);
+  const invited = conf.reduce((a,s)=>a+s.participants.length,0), present = conf.reduce((a,s)=>a+Object.keys(s.utilities||{}).length,0);
+  const utils = conf.flatMap(s=>Object.values(s.utilities||{}));
+  const mean = utils.length? utils.reduce((a,b)=>a+b,0)/utils.length : 0, worst = utils.length? Math.min(...utils):0;
+  const off = r.sessions.length-conf.length;
+  const st = [['confirmed',conf.length,''],['async / escalated',off,off?'warn':''],['attendance',`${Math.round(100*present/Math.max(invited,1))}<small>%</small>`,''],
+              ['mean utility',mean.toFixed(2),''],['worst utility',worst.toFixed(2),worst<0.4?'warn':''],['violations',r.violations.length,r.violations.length?'bad':'']];
+  document.getElementById('stats').innerHTML = st.map(([k,v,c])=>`<div class="stat ${c}"><b>${v}</b><span>${k}</span></div>`).join('');
+  renderGrid(); renderOffgrid(); renderList(); renderHeat(); renderChart(); showDetail(null); updateFocus();
 }
 
-function renderGrid(conf){
-  const tt = document.getElementById('tt');
-  // days from horizon, hours from slots
-  let days = [];
-  if (R.horizon){ const a=iso(R.horizon.start), b=iso(R.horizon.end); const d0=new Date(a.date+'T00:00:00Z'); const n=Math.max(1,Math.round((new Date(b.date+'T00:00:00Z')-d0)/864e5)+(iso(R.horizon.end).h>0?1:0));
+function horizonDays(){
+  const conf=confirmed(); let days=[];
+  if (R.horizon){ const a=iso(R.horizon.start), b=iso(R.horizon.end); const d0=new Date(a.date+'T00:00:00Z');
+    const n=Math.max(1,Math.round((new Date(b.date+'T00:00:00Z')-d0)/864e5)+(b.h>0?1:0));
     for(let i=0;i<n;i++){const d=new Date(d0.getTime()+i*864e5); if(d.getUTCDay()>=1&&d.getUTCDay()<=5) days.push(d.toISOString().slice(0,10));}
   }
   if(!days.length) days=[...new Set(conf.map(s=>iso(s.slot.start).date))].sort();
+  return days;
+}
+
+function renderGrid(){
+  const tt = document.getElementById('tt'), conf=confirmed(), days=horizonDays();
   let h0=9,h1=19;
-  if(R.horizon){h0=iso(R.horizon.start).h; const e=iso(R.horizon.end); h1=e.h+(e.min?1:0);}
+  if(R.horizon){h0=iso(R.horizon.start).h; const e=iso(R.horizon.end); h1=e.h+(e.min?1:0); if(h1<=h0)h1=h0+10;}
   conf.forEach(s=>{h0=Math.min(h0,iso(s.slot.start).h); const e=iso(s.slot.end); h1=Math.max(h1,e.h+(e.min?1:0));});
-  const slots=(h1-h0)*2, slotPx=22, height=slots*slotPx;
+  const slotPx=22, height=(h1-h0)*2*slotPx;
   tt.style.setProperty('--days',days.length);
+  document.getElementById('gridcap').textContent=`${days[0]} → ${days[days.length-1]} · ${conf.length} placed`;
+  const pp = person && R.participants.find(p=>p.id===person);
   let html=`<div class="corner"></div>`+days.map(d=>{const t=iso(d+'T00:00');return `<div class="hd">${DAYS[(t.dow+6)%7]}<small>${d}</small></div>`}).join('');
   html+=`<div class="hours" style="height:${height}px">`+Array.from({length:h1-h0+1},(_,i)=>`<div style="top:${i*2*slotPx}px">${String(h0+i).padStart(2,'0')}:00</div>`).join('')+`</div>`;
   for(const d of days){
     html+=`<div class="day" style="height:${height}px">`;
+    if(pp&&pp.preferred_hours){const [a,b]=pp.preferred_hours; html+=`<div class="pref" style="top:${(a-h0)*2*slotPx}px;height:${(b-a)*2*slotPx}px" title="${esc(pp.id)} preferred hours ${a}:00–${b}:00"></div>`;}
     const todays=conf.filter(s=>iso(s.slot.start).date===d).sort((a,b)=>a.slot.start<b.slot.start?-1:1);
-    // simple lane packing for overlaps
     const lanes=[];
-    for(const s of todays){const a=iso(s.slot.start),b=iso(s.slot.end);s._t=(a.h-h0)*2+a.min/30;s._b=(b.h-h0)*2+b.min/30;let L=0;while(lanes[L]&&lanes[L]>s._t)L++;lanes[L]=s._b;s._lane=L;s._lanes=lanes.length;}
+    for(const s of todays){const a=iso(s.slot.start),b=iso(s.slot.end);s._t=(a.h-h0)*2+a.min/30;s._b=(b.h-h0)*2+b.min/30;let L=0;while(lanes[L]&&lanes[L]>s._t)L++;lanes[L]=s._b;s._lane=L;}
     for(const s of todays){
       const n=Math.max(1,...todays.filter(o=>!(o._b<=s._t||o._t>=s._b)).map(o=>o._lane+1));
       const w=100/n, left=`calc(${s._lane*w}% + 4px)`, width=`calc(${w}% - 8px)`;
       const top=s._t*slotPx+1, hgt=(s._b-s._t)*slotPx-2;
-      html+=`<div class="blk" tabindex="0" data-id="${esc(s.id)}" style="--c:var(${colorOf[s.id]});top:${top}px;height:${hgt}px;left:${left};width:${width}">
-        <div class="t">${esc(s.title)}${s.recurrence_weeks>1?`<span class="rec">×${s.recurrence_weeks}w</span>`:''}</div>
+      const mine = !person || s.participants.includes(person);
+      html+=`<div class="blk ${mine?'':'dim'}" tabindex="0" data-id="${esc(s.id)}" style="--c:var(${colorOf[s.id]});top:${top}px;height:${hgt}px;left:${left};width:${width}">
+        <div class="t">${esc(s.title)}${s.recurrence_weeks>1?`<span class="rec">×${s.recurrence_weeks}w</span>`:''}${s.relaxation?`<span class="relx" title="relaxation level ${s.relaxation.level}">L${s.relaxation.level}</span>`:''}</div>
         <div class="m">${hm(s.slot.start)}–${hm(s.slot.end)} · ${s.participants.length}p${s.resource?' · '+esc(s.resource):''}</div></div>`;
     }
     html+=`</div>`;
@@ -217,27 +267,50 @@ function renderGrid(conf){
   });
 }
 
+function renderOffgrid(){
+  const off=R.sessions.filter(s=>s.status!=='confirmed'), el=document.getElementById('offgrid');
+  el.hidden=!off.length; if(!off.length)return;
+  el.innerHTML=`<span class="lbl">Not on the grid</span>`+off.map(s=>`<button class="chip ${person&&!s.participants.includes(person)?'dim':''}" data-id="${esc(s.id)}" style="--c:var(${colorOf[s.id]})">
+    <span class="pill ${s.status}">${s.status==='asynchronous'?'async':s.status}</span>${esc(s.title)}<span class="note">${s.relaxation?`L${s.relaxation.level} ${esc(s.relaxation.kind)}`:''}</span></button>`).join('');
+  el.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>select(b.dataset.id)));
+}
+
 function renderList(){
   const order={confirmed:0,asynchronous:1,escalated:2};
   const rows=[...R.sessions].sort((a,b)=>order[a.status]-order[b.status]||(a.slot&&b.slot?(a.slot.start<b.slot.start?-1:1):0));
-  document.getElementById('list').innerHTML=rows.map(s=>`<div class="row" data-id="${esc(s.id)}" style="--c:var(${colorOf[s.id]})">
-    <span class="sw"></span><div><div class="n">${esc(s.title)}</div><div class="w">${s.slot?`${DAYS[(iso(s.slot.start).dow+6)%7]} ${hm(s.slot.start)} · ${s.duration_minutes} min`:(s.relaxation?`level ${s.relaxation.level} · ${s.relaxation.kind}`:'unscheduled')}</div></div>
+  document.getElementById('listcap').textContent = person? `${rows.filter(s=>s.participants.includes(person)).length} with ${person}` : `${rows.length} total`;
+  document.getElementById('list').innerHTML=rows.map(s=>`<div class="row ${person&&!s.participants.includes(person)?'dim':''}" tabindex="0" data-id="${esc(s.id)}" style="--c:var(${colorOf[s.id]})">
+    <span class="sw"></span><div><div class="n">${esc(s.title)}</div><div class="w">${s.slot?`${DAYS[(iso(s.slot.start).dow+6)%7]} ${hm(s.slot.start)} · ${s.duration_minutes} min${s.min_utility!=null?` · min ${s.min_utility.toFixed(2)}`:''}`:(s.relaxation?`level ${s.relaxation.level} · ${s.relaxation.kind}`:'unscheduled')}</div></div>
     <span class="pill ${s.status}">${s.status==='asynchronous'?'async':s.status}</span></div>`).join('');
-  document.getElementById('list').querySelectorAll('.row').forEach(el=>el.addEventListener('click',()=>select(el.dataset.id)));
+  document.getElementById('list').querySelectorAll('.row').forEach(el=>{el.addEventListener('click',()=>select(el.dataset.id));el.addEventListener('keydown',e=>{if(e.key==='Enter'){select(el.dataset.id)}})});
 }
 
-function select(id){ sel = sel===id?null:id;
-  document.querySelectorAll('.blk').forEach(el=>{el.classList.toggle('sel',el.dataset.id===sel);el.classList.toggle('dim',!!sel&&el.dataset.id!==sel)});
-  document.querySelectorAll('.row').forEach(el=>el.classList.toggle('sel',el.dataset.id===sel));
-  showDetail(sel?R.sessions.find(s=>s.id===sel):null);
+function select(id){ sel = sel===id?null:id; paintSelection(); showDetail(sel?byId(sel):null);
+  if(sel){const row=document.querySelector(`.row[data-id="${CSS.escape(sel)}"]`); if(row) row.scrollIntoView({block:'nearest'});} }
+function paintSelection(){
+  document.querySelectorAll('.blk').forEach(el=>{const s=byId(el.dataset.id); el.classList.toggle('sel',el.dataset.id===sel);
+    el.classList.toggle('dim',(!!sel&&el.dataset.id!==sel)||(!!person&&!s.participants.includes(person)))});
+  document.querySelectorAll('.row,.chip').forEach(el=>el.classList.toggle('sel',el.dataset.id===sel));
+  document.querySelectorAll('.heat th.col').forEach(el=>el.classList.toggle('sel',el.dataset.id===sel));
+}
+
+function focusPerson(id){ person = person===id?null:id; renderGrid(); renderOffgrid(); renderList(); paintSelection(); updateFocus();
+  document.querySelectorAll('.heat tbody tr').forEach(tr=>tr.classList.toggle('on',tr.dataset.p===person)); }
+function updateFocus(){
+  const f=document.getElementById('focus'); if(!person){f.classList.remove('on');f.innerHTML='';return;}
+  const p=R.participants.find(x=>x.id===person)||{}; const mine=R.sessions.filter(s=>s.participants.includes(person));
+  const us=mine.filter(s=>s.status==='confirmed').map(s=>(s.utilities||{})[person]).filter(u=>u!=null);
+  f.classList.add('on');
+  f.innerHTML=`<b>${esc(person)}</b>${p.role==='facilitator'?' ◆':''}<span>${mine.length} session${mine.length>1?'s':''}${us.length?` · mean utility ${(us.reduce((a,b)=>a+b,0)/us.length).toFixed(2)}`:''} · debt ${(p.debt||0).toFixed(1)}${p.preferred_hours?` · prefers ${p.preferred_hours[0]}:00–${p.preferred_hours[1]}:00 (shaded)`:''}</span><span class="hint">others dimmed</span><button type="button" id="unfocus" style="margin-left:auto">Clear</button>`;
+  document.getElementById('unfocus').addEventListener('click',()=>focusPerson(person));
 }
 
 function showDetail(s){
   const d=document.getElementById('detail');
-  if(!s){d.innerHTML='<div class="empty">Click a block or a row.</div>';return;}
+  if(!s){d.innerHTML='<div class="empty">Click a block, a chip or a row. Esc clears.</div>';return;}
   const util=s.utilities||{};
   const bars=s.participants.map(p=>{const u=util[p];const mand=(s.mandatory||[]).includes(p);
-    return `<div class="bar ${mand?'mand':''}"><span class="id">${esc(p)}</span><div class="tr"><div class="fl" style="width:${u==null?0:Math.round(u*100)}%"></div></div><span class="v">${u==null?'—':u.toFixed(2)}</span></div>`}).join('');
+    return `<div class="bar ${mand?'mand':''} ${u!=null&&u<0.4?'low':''}"><span class="id" data-p="${esc(p)}" title="focus ${esc(p)}">${esc(p)}</span><div class="tr"><div class="fl" style="width:${u==null?0:Math.round(u*100)}%"></div></div><span class="v">${u==null?'—':u.toFixed(2)}</span></div>`}).join('');
   const rel=s.relaxation?`<dt>relaxation</dt><dd>L${s.relaxation.level} ${esc(s.relaxation.kind)}</dd>`:'';
   const fb=s.relaxation&&s.relaxation.fallback&&s.relaxation.fallback.deadline?`<dt>fallback</dt><dd>${esc((s.relaxation.fallback.materials||[]).join(', '))} · due ${esc(s.relaxation.fallback.deadline).slice(0,10)}</dd>`:'';
   d.innerHTML=`<div class="detail"><h3>${esc(s.title)}</h3>
@@ -247,23 +320,30 @@ function showDetail(s){
     ${s.resource?`<dt>resource</dt><dd>${esc(s.resource)}</dd>`:''}
     ${s.score!=null&&s.status==='confirmed'?`<dt>score U</dt><dd>${s.score.toFixed(2)}</dd><dt>min utility</dt><dd>${s.min_utility==null?'—':s.min_utility.toFixed(2)}</dd>`:''}
     ${rel}${fb}</dl>
-    <div class="bars">${bars}</div><div style="font-size:11px;color:var(--muted)">* mandatory attendee</div>
+    <div class="bars">${bars}</div><div class="note">* mandatory attendee · amber = below 0.40 · — = not attending</div>
     ${s.trace&&s.trace.length?`<ol class="trace">${s.trace.map((t,i)=>`<li class="${i===s.trace.length-1?'last':''}">${esc(t)}</li>`).join('')}</ol>`:''}</div>`;
+  d.querySelectorAll('.bar .id').forEach(el=>el.addEventListener('click',()=>focusPerson(el.dataset.p)));
 }
 
-function renderHeat(conf){
-  const people=R.participants;
-  const cols=conf;
-  let html='<thead><tr><th></th>'+cols.map(s=>`<th class="col" title="${esc(s.title)}">${esc(s.id)}</th>`).join('')+'<th>D</th></tr></thead><tbody>';
+function renderHeat(){
+  const cols=confirmed();
+  let html='<thead><tr><th></th>'+cols.map(s=>`<th class="col" data-id="${esc(s.id)}" title="${esc(s.title)}">${esc(s.id)}</th>`).join('')+'<th>ū</th><th>D</th></tr></thead><tbody>';
+  const people=[...R.participants].sort((a,b)=>(a.role==='facilitator'?0:1)-(b.role==='facilitator'?0:1)||a.id.localeCompare(b.id));
   for(const p of people){
-    html+=`<tr><th>${esc(p.id)}${p.role==='facilitator'?' ◆':''}</th>`+cols.map(s=>{const u=(s.utilities||{})[p.id];
-      return u==null?'<td></td>':`<td class="u" style="--p:${u.toFixed(2)}" title="${esc(p.id)} · ${esc(s.title)} · ${u.toFixed(2)}"></td>`}).join('')+`<td class="debt">${(p.debt||0).toFixed(1)}</td></tr>`;
+    const us=cols.map(s=>(s.utilities||{})[p.id]).filter(u=>u!=null);
+    html+=`<tr data-p="${esc(p.id)}"><th><button type="button" data-p="${esc(p.id)}">${esc(p.id)}${p.role==='facilitator'?' ◆':''}</button></th>`+cols.map(s=>{const u=(s.utilities||{})[p.id];
+      return u==null?'<td></td>':`<td class="u" data-id="${esc(s.id)}" style="--p:${u.toFixed(2)}" title="${esc(p.id)} · ${esc(s.title)} · ${u.toFixed(2)}"></td>`}).join('')
+      +`<td class="mean">${us.length?(us.reduce((a,b)=>a+b,0)/us.length).toFixed(2):'—'}</td><td class="debt">${(p.debt||0).toFixed(1)}</td></tr>`;
   }
-  document.getElementById('heat').innerHTML=html+'</tbody>';
+  const heat=document.getElementById('heat'); heat.innerHTML=html+'</tbody>';
+  heat.querySelectorAll('th button').forEach(b=>b.addEventListener('click',()=>focusPerson(b.dataset.p)));
+  heat.querySelectorAll('td.u').forEach(td=>td.addEventListener('click',()=>select(td.dataset.id)));
 }
 
 function renderChart(){
   const h=R.cost_history||[]; const el=document.getElementById('chart');
+  document.getElementById('solvercap').textContent=`${R.solver.toUpperCase()} · ${R.rounds} rounds · ${R.messages} messages`;
+  document.getElementById('kpis').innerHTML=[['rounds',R.rounds],['messages',R.messages],['final cost',h.length?h[h.length-1].toFixed(1):'—']].map(([k,v])=>`<div class="kpi"><b>${v}</b><span>${k}</span></div>`).join('');
   if(h.length<2){el.innerHTML='<div class="empty">No round history.</div>';return;}
   const W=340,H=150,L=44,Rr=10,T=10,B=24;
   const min=Math.min(...h),max=Math.max(...h),span=(max-min)||1;
@@ -274,16 +354,18 @@ function renderChart(){
     ${ticks.map(v=>`<line class="grid" x1="${L}" x2="${W-Rr}" y1="${y(v)}" y2="${y(v)}"/><text class="ax" x="${L-6}" y="${y(v)+3}" text-anchor="end">${v.toFixed(1)}</text>`).join('')}
     <polygon class="ar" points="${x(0)},${y(min)} ${pts} ${x(h.length-1)},${y(min)}"/>
     <polyline class="ln" points="${pts}"/>
+    ${h.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="7" fill="transparent"><title>round ${i+1}: ${v.toFixed(2)}</title></circle>`).join('')}
     <circle class="pt" cx="${x(h.length-1)}" cy="${y(h[h.length-1])}" r="4"/>
     <text class="ax" x="${L}" y="${H-6}">round 1</text><text class="ax" x="${W-Rr}" y="${H-6}" text-anchor="end">round ${h.length}</text>
-  </svg><div class="cap">Global cost (hard-violation penalty − weighted utility). Last round: ${h[h.length-1].toFixed(2)}.</div>`;
+  </svg><div class="cap">Global cost per round: hard-violation penalty minus weighted utility. Lower is better; a flat tail means the agents reached a local optimum.</div>`;
 }
 
-function tip(e,id){const s=R.sessions.find(x=>x.id===id); const t=document.getElementById('tip');
-  const u=s.utilities||{}; t.innerHTML=`<b>${esc(s.title)}</b><div class="u">${s.participants.map(p=>`<span>${esc(p)}</span><span>${u[p]==null?'—':u[p].toFixed(2)}</span>`).join('')}</div>`;
+function tip(e,id){const s=byId(id); const t=document.getElementById('tip');
+  const u=s.utilities||{}; t.innerHTML=`<b>${esc(s.title)}</b><div class="u">${s.participants.map(p=>`<span>${esc(p)}${(s.mandatory||[]).includes(p)?' *':''}</span><span>${u[p]==null?'—':u[p].toFixed(2)}</span>`).join('')}</div>`;
   t.style.display='block'; const x=Math.min(e.clientX+14,innerWidth-280), yy=Math.min(e.clientY+14,innerHeight-160); t.style.left=x+'px'; t.style.top=yy+'px';}
 function hideTip(){document.getElementById('tip').style.display='none'}
 
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(sel){select(sel)} else if(person){focusPerson(person)}}});
 document.getElementById('file').addEventListener('change',ev=>{const f=ev.target.files[0]; if(!f)return; const rd=new FileReader();
   rd.onload=()=>{try{render(JSON.parse(rd.result))}catch(err){alert('Not a dcop result JSON: '+err.message)}}; rd.readAsText(f);});
 

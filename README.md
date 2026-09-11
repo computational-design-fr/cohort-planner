@@ -100,6 +100,8 @@ Busy = horizon minus the union of `free` windows (a day without suggestions is f
 PYTHONIOENCODING=utf-8 "C:/ProgramData/anaconda3/envs/os/python.exe" -m dcop.cli solve examples/cohort_large.json --solver mgm --seed 1 --html out/cohort_large.html
 ```
 
+Published reports: https://computational-design-fr.github.io/cohort-planner/ (`reports/`, GitHub Pages from the repo root).
+
 `ui/index.html` is a static page (no build, no library): week grid with the confirmed blocks,
 session rail (status, score, min utility, relaxation level, repair trace), participant × session
 utility heatmap with the inconvenience debt, solver cost per round. It can also load any
